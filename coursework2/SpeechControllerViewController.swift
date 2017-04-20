@@ -19,13 +19,24 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     
     var k: Int = 0
     var myMutableString: NSMutableAttributedString?
-    var words: [String] = []
-    var wordsWithComma: [String] = []
+    
+    
+    var words: [String] = [] //words without punctuation
+    var wordsWithComma: [String] = [] //words with punctuation
+    
+    var numberOfSymbolsToWord = [Int]()
     
     var speechRec: SpeechRecognition!
     
+    var shinglAlgo: Shingles?
+    
+    @IBOutlet weak var statusLabel: UILabel!
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //clean(text: "мы для? тебя! будм^ вы")
 
         let attributes = [
             NSForegroundColorAttributeName: UIColor.red
@@ -33,33 +44,66 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
         //words = text.components(separatedBy: " ")
-        let wordsWithEmpty = text.components(separatedBy: CharacterSet(charactersIn: (", .?\n")))
+        
+        let wordsWithEmpty = text.lowercased().components(separatedBy: CharacterSet(charactersIn: (", .!-?\n")))
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
         }
         
-        wordsWithComma = text.components(separatedBy: " ")
+        //words = canonize(text: text)
+        wordsWithComma = text.components(separatedBy: CharacterSet(charactersIn: (" \n")))
+        
+        numberOfSymbolsToWord.insert(0, at: 0)
+        for i in 1...wordsWithComma.count {
+            //numberOfSymbolsToWord[i] = wordsWithComma[i-1].characters.count + 1
+            numberOfSymbolsToWord.insert(numberOfSymbolsToWord[i-1] + wordsWithComma[i-1].characters.count + 1, at: i)
+        }
+        
+        shinglAlgo = Shingles(baseText: text)
+        //shinglAlgo?.start(text: text)
     }
     
+    
+    @IBAction func startRecognition(_ sender: Any) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            if let this = self{
+                this.statusLabel.text = "Идет запись..."
+                let status = this.micClient?.startMicAndRecognition()
+                if(status != 0) {
+                    print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status!))
+                    this.statusLabel.text = "Ошибка. Запись остановлена."
+                }
+            }
+        }
+    }
     
     @IBAction func stopRecognition(_ sender: Any) {
         speechRec.stop = true
         micClient?.endMicAndRecognition()
+        self.statusLabel.text = "Запись остановлена."
     }
     
     override func viewDidAppear(_ animated: Bool) {
         speechRec = SpeechRecognition(mode: mode)
         
+         //убрать это
+//        let ranges = shinglAlgo?.start(text: "давайте начнем")
+//        for (start, end) in ranges! {
+//            underLine(fromWord: start, toWord: end)
+//        }
+        
         micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(mode, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: speechRec)
         
         if let mic = micClient {
-            let status = mic.startMicAndRecognition();
+            //let status = mic.startMicAndRecognition();
             speechRec.micClient = mic
             speechRec.delegate = self
-            if(status != 0) {
-                print("Error starting audio: " + convertSpeechErrorToString(errorCode: status))
-            }
+//            if(status != 0) {
+//                print("Error starting audio: " + convertSpeechErrorToString(errorCode: status))
+//            }
         }
+        
+        
     }
     
     var coursor: Int = 0
@@ -67,13 +111,13 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     DispatchQueue.main.async {
 
         if(self.k < self.words.count){
-            var w = self.words[self.k]
+            let w = self.words[self.k]
        
             if let str = self.myMutableString {
             
             for res in result.components(separatedBy: " "){
                 
-                if(res.lowercased() == w.lowercased()) {
+                if(res.lowercased() == w) {
                     str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: self.coursor, length: self.wordsWithComma[self.k].characters.count))
                     self.coursor += self.wordsWithComma[self.k].characters.count + 1
                     self.k += 1
@@ -89,6 +133,39 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         }
         }
     }
+    
+    func underLine(fromWord: String, toWord:String = "") {
+        if let str = self.myMutableString {
+            let left = words.index(of: fromWord)!
+            if let right = words.index(of: toWord){
+            
+                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[right + 1] - numberOfSymbolsToWord[left]))
+                coursor = numberOfSymbolsToWord[right+1]
+                k = right + 1
+            } else {
+                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[left + 1] - numberOfSymbolsToWord[left]))
+                coursor = numberOfSymbolsToWord[left+1]
+                k = left + 1
+            }
+            baseText.attributedText = str
+        }
+    }
+    
+    func recogniseFinalWith(result: RecognitionResult) {
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
+                if(!result.recognizedPhrase.isEmpty){
+                    let ranges = this.shinglAlgo?.start(text: (result.recognizedPhrase[0] as! RecognizedPhrase).inverseTextNormalizationResult)
+                    for (start, end) in ranges! {
+                        this.underLine(fromWord: start, toWord: end)
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -10,6 +10,7 @@ import UIKit
 
 protocol SpeechRecognitionClassDelegate {
     func recogniseWith(result: String)
+    func recogniseFinalWith(result: RecognitionResult)
 }
 
 class SpeechRecognition: SpeechRecognitionProtocol {
@@ -33,9 +34,9 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     
     func onFinalResponseReceived(_ result: RecognitionResult!) {
         
-        micClient?.endMicAndRecognition();
+        //micClient?.endMicAndRecognition();
         let isFinalDicationMessage = self.mode == .longDictation &&
-            (result.recognitionStatus == .endOfDictation ||
+            (/*result.recognitionStatus == .endOfDictation ||*/
                 result.recognitionStatus == .dictationEndSilenceTimeout)
         
         if(isFinalDicationMessage || mode == .shortPhrase || stop){
@@ -49,12 +50,15 @@ class SpeechRecognition: SpeechRecognitionProtocol {
             for i in 0 ..< result.recognizedPhrase.count {
                 let phrase: RecognizedPhrase? = result.recognizedPhrase[i] as? RecognizedPhrase
                 
-                print(self.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.displayText))
+                print(self.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
                 
                 
                 }
             }
+            delegate?.recogniseFinalWith(result: result)
         }
+            
+        
     }
     
     func convertSpeechRecoConfidenceEnumToString(confidence: Confidence) -> String {
@@ -79,9 +83,13 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     }
     
     func onMicrophoneStatus(_ recording: Bool) {
-        print("Microphone status changed")
+        print("Microphone status changed: ", recording)
         if(!recording) {
             micClient?.endMicAndRecognition()
         }
+    }
+    
+    func onSpeakerStatus(_ speaking: Bool) {
+        print(speaking)
     }
 }

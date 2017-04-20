@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710C61E01E96F86300DFC7B1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 710C61DF1E96F86300DFC7B1 /* Security.framework */; };
+		710C61E21E96F89600DFC7B1 /* Shingles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710C61E11E96F89600DFC7B1 /* Shingles.swift */; };
 		714095401E78AE0B0042DDDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7140953F1E78AE0B0042DDDB /* AppDelegate.swift */; };
 		714095421E78AE0B0042DDDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714095411E78AE0B0042DDDB /* ViewController.swift */; };
 		714095451E78AE0B0042DDDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 714095431E78AE0B0042DDDB /* Main.storyboard */; };
@@ -33,6 +35,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		710C61DF1E96F86300DFC7B1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		710C61E11E96F89600DFC7B1 /* Shingles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Shingles.swift; path = ../Shingles.swift; sourceTree = "<group>"; };
 		7140953C1E78AE0B0042DDDB /* coursework2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = coursework2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7140953F1E78AE0B0042DDDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		714095411E78AE0B0042DDDB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				710C61E01E96F86300DFC7B1 /* Security.framework in Frameworks */,
 				714095651E78B7D60042DDDB /* SpeechSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +86,7 @@
 		7140953E1E78AE0B0042DDDB /* coursework2 */ = {
 			isa = PBXGroup;
 			children = (
+				710C61E11E96F89600DFC7B1 /* Shingles.swift */,
 				7140953F1E78AE0B0042DDDB /* AppDelegate.swift */,
 				714095411E78AE0B0042DDDB /* ViewController.swift */,
 				714095431E78AE0B0042DDDB /* Main.storyboard */,
@@ -97,6 +103,7 @@
 		7140955C1E78B64F0042DDDB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				710C61DF1E96F86300DFC7B1 /* Security.framework */,
 				714095641E78B7D60042DDDB /* SpeechSDK.framework */,
 				7140955D1E78B6500042DDDB /* SpeechSDK.framework */,
 			);
@@ -179,6 +186,7 @@
 			files = (
 				714095421E78AE0B0042DDDB /* ViewController.swift in Sources */,
 				714095671E7A14F30042DDDB /* SpeechRecognition.swift in Sources */,
+				710C61E21E96F89600DFC7B1 /* Shingles.swift in Sources */,
 				71FBF9851E82C50C008B7903 /* SpeechControllerViewController.swift in Sources */,
 				714095401E78AE0B0042DDDB /* AppDelegate.swift in Sources */,
 			);
