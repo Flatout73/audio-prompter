@@ -65,9 +65,9 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     
     
     @IBAction func startRecognition(_ sender: Any) {
+        self.statusLabel.text = "Идет запись..."
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             if let this = self{
-                this.statusLabel.text = "Идет запись..."
                 let status = this.micClient?.startMicAndRecognition()
                 if(status != 0) {
                     print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status!))
@@ -87,10 +87,10 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         speechRec = SpeechRecognition(mode: mode)
         
          //убрать это
-//        let ranges = shinglAlgo?.start(text: "давайте начнем")
-//        for (start, end) in ranges! {
-//            underLine(fromWord: start, toWord: end)
-//        }
+        let ranges = shinglAlgo?.start(text: "давайте начнём")
+        for (start, end) in ranges! {
+            underLine(fromWord: start, toWord: end)
+        }
         
         micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(mode, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: speechRec)
         

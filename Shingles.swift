@@ -46,6 +46,7 @@ class Shingles {
         //            res = res.replacingOccurrences(of: sWord, with: "", options: .diacriticInsensitive, range: nil)
         //        }
         
+        res = res.replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
         return res
             .components(separatedBy: .punctuationCharacters)
             .joined()

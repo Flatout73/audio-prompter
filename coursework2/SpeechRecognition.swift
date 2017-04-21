@@ -33,13 +33,20 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     }
     
     func onFinalResponseReceived(_ result: RecognitionResult!) {
+    
+        if(result.recognitionStatus != .recognitionSuccess) {
+            print(result.recognitionStatus)
+            //micClient?.endMicAndRecognition()
+            micClient?.audioStop()
+            micClient?.startMicAndRecognition()
+        }
         
         //micClient?.endMicAndRecognition();
         let isFinalDicationMessage = self.mode == .longDictation &&
             (/*result.recognitionStatus == .endOfDictation ||*/
                 result.recognitionStatus == .dictationEndSilenceTimeout)
         
-        if(isFinalDicationMessage || mode == .shortPhrase || stop){
+        if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
             if let mic = micClient {
                 mic.endMicAndRecognition()
             }
@@ -80,11 +87,13 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     
     func onError(_ errorMessage: String!, withErrorCode errorCode: Int32) {
         print(errorMessage)
+        //micClient?.startMicAndRecognition()
     }
     
     func onMicrophoneStatus(_ recording: Bool) {
         print("Microphone status changed: ", recording)
         if(!recording) {
+            //micClient?.audioStart()
             micClient?.endMicAndRecognition()
         }
     }
