@@ -8,6 +8,12 @@
 
 import Foundation
 
+struct Respons {
+    var startWord: String
+    var endWord: String
+    var startIndex: Int
+}
+
 class Shingles {
     
     var originalTextHashes: [String] = []
@@ -21,17 +27,19 @@ class Shingles {
         
     }
     
-    func start(text: String) -> [String:String] {
+    func start(text: String) -> Respons? {
         let canonized = canonize(text: text)
         let hashes = hashedShinglesFrom(words: canonized)
-        var ranges: [String: String] = [:]
+        //var ranges: [String: String] = [:]
         
         for i in 0..<hashes.count {
             if let h = originalTextHashes.index(of: hashes[i]) {
-                ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
+                //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
+                let resp = Respons(startWord: canonizedWords[h], endWord: canonizedWords[h + shinglLength - 1], startIndex: h)
+                return resp
             }
         }
-        return ranges
+        return nil
     }
     
     

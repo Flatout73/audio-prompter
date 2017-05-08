@@ -10,7 +10,8 @@ import UIKit
 
 protocol SpeechRecognitionClassDelegate {
     func recogniseWith(result: String)
-    func recogniseFinalWith(result: RecognitionResult)
+    func underLine(fromWord: String, toWord: String, index: Int)
+    func recognitionStopped()
 }
 
 class SpeechRecognition: SpeechRecognitionProtocol {
@@ -21,6 +22,8 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var mode: SpeechRecognitionMode
     
     var stop: Bool = false
+    
+    var shinglAlgo: Shingles?
     
     init(mode: SpeechRecognitionMode) {
         self.mode = mode
@@ -62,10 +65,22 @@ class SpeechRecognition: SpeechRecognitionProtocol {
                 
                 }
             }
-            delegate?.recogniseFinalWith(result: result)
+            recogniseFinalWith(result: result)
         }
             
         
+    }
+    
+    func recogniseFinalWith(result: RecognitionResult) {
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
+                if(!result.recognizedPhrase.isEmpty){
+                    if let ranges = this.shinglAlgo?.start(text: (result.recognizedPhrase[0] as! RecognizedPhrase).inverseTextNormalizationResult){
+                        this.delegate?.underLine(fromWord: ranges.startWord, toWord: ranges.endWord, index: ranges.startIndex)
+                    }
+                }
+            }
+        }
     }
     
     func convertSpeechRecoConfidenceEnumToString(confidence: Confidence) -> String {
@@ -93,8 +108,9 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     func onMicrophoneStatus(_ recording: Bool) {
         print("Microphone status changed: ", recording)
         if(!recording) {
-            //micClient?.audioStart()
             micClient?.endMicAndRecognition()
+            delegate?.recognitionStopped()
+            
         }
     }
     

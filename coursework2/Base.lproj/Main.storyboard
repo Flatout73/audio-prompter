@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="raw-M9-VHz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="raw-M9-VHz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,8 +23,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tEN-ru-CfB">
-                                <rect key="frame" x="164" y="573" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="163" y="573" width="48" height="30"/>
+                                <state key="normal" title="Готово"/>
                                 <connections>
                                     <action selector="startRecognition:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aws-Hk-94f"/>
                                     <segue destination="OKP-1z-AUG" kind="show" identifier="toRecognise" id="cLW-AY-olB"/>
@@ -71,51 +71,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0M6-C9-dCG">
-                                <rect key="frame" x="16" y="72" width="343" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-bi-1CL">
-                                <rect key="frame" x="171" y="617" width="32" height="30"/>
-                                <state key="normal" title="Stop"/>
-                                <connections>
-                                    <action selector="stopRecognition:" destination="OKP-1z-AUG" eventType="touchUpInside" id="gHI-jf-I6v"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HnG-g3-QcT">
-                                <rect key="frame" x="117" y="617" width="34" height="30"/>
+                                <rect key="frame" x="138.5" y="621" width="34" height="30"/>
                                 <state key="normal" title="Start"/>
                                 <connections>
                                     <action selector="startRecognition:" destination="OKP-1z-AUG" eventType="touchUpInside" id="q48-t7-tG4"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Запись остановлена" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7O-wq-esr">
-                                <rect key="frame" x="28" y="594" width="163.5" height="21"/>
+                                <rect key="frame" x="28" y="592" width="163.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-bi-1CL">
+                                <rect key="frame" x="203.5" y="621" width="32" height="30"/>
+                                <state key="normal" title="Stop"/>
+                                <connections>
+                                    <action selector="stopRecognition:" destination="OKP-1z-AUG" eventType="touchUpInside" id="gHI-jf-I6v"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvU-a8-TY8">
+                                <rect key="frame" x="24" y="72" width="327" height="512"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HnG-g3-QcT" firstAttribute="height" secondItem="ThL-bi-1CL" secondAttribute="height" id="2lb-mO-TSB"/>
-                            <constraint firstItem="HnG-g3-QcT" firstAttribute="top" secondItem="k7O-wq-esr" secondAttribute="bottom" constant="2" id="41e-Q8-DzE"/>
-                            <constraint firstItem="0M6-C9-dCG" firstAttribute="centerX" secondItem="5al-cH-iow" secondAttribute="centerX" id="4dg-d1-QF3"/>
-                            <constraint firstItem="HnG-g3-QcT" firstAttribute="baseline" secondItem="ThL-bi-1CL" secondAttribute="baseline" id="J19-uP-6OZ"/>
-                            <constraint firstItem="ThL-bi-1CL" firstAttribute="centerX" secondItem="5al-cH-iow" secondAttribute="centerX" id="QtZ-xK-eOc"/>
+                            <constraint firstItem="HnG-g3-QcT" firstAttribute="top" secondItem="k7O-wq-esr" secondAttribute="bottom" constant="8" id="41e-Q8-DzE"/>
+                            <constraint firstItem="hvU-a8-TY8" firstAttribute="leading" secondItem="5al-cH-iow" secondAttribute="leadingMargin" constant="8" id="91p-fN-Rre"/>
+                            <constraint firstItem="ThL-bi-1CL" firstAttribute="baseline" secondItem="HnG-g3-QcT" secondAttribute="baseline" id="H5K-pE-7lT"/>
+                            <constraint firstItem="ThL-bi-1CL" firstAttribute="centerX" secondItem="5al-cH-iow" secondAttribute="centerX" constant="32" id="J2m-zi-dm7"/>
+                            <constraint firstItem="Set-Hr-J8G" firstAttribute="top" secondItem="HnG-g3-QcT" secondAttribute="bottom" constant="16" id="TGb-ju-gIp"/>
+                            <constraint firstItem="hvU-a8-TY8" firstAttribute="top" secondItem="VHI-TI-Hpe" secondAttribute="bottom" constant="8" id="Uuc-W6-Rk4"/>
                             <constraint firstItem="k7O-wq-esr" firstAttribute="leading" secondItem="5al-cH-iow" secondAttribute="leadingMargin" constant="12" id="VL7-KU-NuT"/>
-                            <constraint firstItem="0M6-C9-dCG" firstAttribute="top" secondItem="VHI-TI-Hpe" secondAttribute="bottom" constant="8" id="hQq-zB-1Vy"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="0M6-C9-dCG" secondAttribute="leading" id="oam-ge-Mmf"/>
-                            <constraint firstItem="ThL-bi-1CL" firstAttribute="leading" secondItem="HnG-g3-QcT" secondAttribute="trailing" constant="20" id="qd4-W9-MTd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0M6-C9-dCG" secondAttribute="trailing" id="xPZ-O0-7op"/>
-                            <constraint firstItem="Set-Hr-J8G" firstAttribute="top" secondItem="ThL-bi-1CL" secondAttribute="bottom" constant="20" id="zHv-pL-Ah8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hvU-a8-TY8" secondAttribute="trailing" constant="8" id="cOi-qw-tgy"/>
+                            <constraint firstItem="k7O-wq-esr" firstAttribute="top" secondItem="hvU-a8-TY8" secondAttribute="bottom" constant="8" id="eLz-nc-YaP"/>
+                            <constraint firstItem="HnG-g3-QcT" firstAttribute="centerX" secondItem="5al-cH-iow" secondAttribute="centerX" constant="-32" id="hZM-dk-nUN"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="baseText" destination="0M6-C9-dCG" id="eBU-HR-dy2"/>
-                        <outlet property="statusLabel" destination="k7O-wq-esr" id="Y3i-az-DgP"/>
+                        <outlet property="baseText" destination="hvU-a8-TY8" id="VA1-dy-IqB"/>
+                        <outlet property="statusLabel" destination="k7O-wq-esr" id="J65-N8-cec"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ycf-aw-NiC" userLabel="First Responder" sceneMemberID="firstResponder"/>

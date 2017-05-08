@@ -13,11 +13,11 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     var micClient:  MicrophoneRecognitionClient?;
     var mode: SpeechRecognitionMode = SpeechRecognitionMode.longDictation
 
-    @IBOutlet weak var baseText: UILabel!
+    @IBOutlet weak var baseText: UITextView!
     
     var text: String = ""
     
-    var k: Int = 0
+    var k: Int = 0 //курсор
     var myMutableString: NSMutableAttributedString?
     
     
@@ -28,24 +28,22 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     
     var speechRec: SpeechRecognition!
     
-    var shinglAlgo: Shingles?
-    
     @IBOutlet weak var statusLabel: UILabel!
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //clean(text: "мы для? тебя! будм^ вы")
 
         let attributes = [
-            NSForegroundColorAttributeName: UIColor.red
+            NSForegroundColorAttributeName: UIColor.darkText,
+            NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)
         ]
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
-        //words = text.components(separatedBy: " ")
         
-        let wordsWithEmpty = text.lowercased().components(separatedBy: CharacterSet(charactersIn: (", .!-?\n")))
+        let wordsWithEmpty = text
+                            .lowercased()
+                            .replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
+                            .components(separatedBy: CharacterSet(charactersIn: (", .!-?\n")))
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
         }
@@ -58,9 +56,9 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
             //numberOfSymbolsToWord[i] = wordsWithComma[i-1].characters.count + 1
             numberOfSymbolsToWord.insert(numberOfSymbolsToWord[i-1] + wordsWithComma[i-1].characters.count + 1, at: i)
         }
+
+        numberOfSymbolsToWord[numberOfSymbolsToWord.count - 1] -= 1
         
-        shinglAlgo = Shingles(baseText: text)
-        //shinglAlgo?.start(text: text)
     }
     
     
@@ -69,7 +67,7 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             if let this = self{
                 let status = this.micClient?.startMicAndRecognition()
-                if(status != 0) {
+                if(status != 0 && !this.speechRec.stop) {
                     print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status!))
                     this.statusLabel.text = "Ошибка. Запись остановлена."
                 }
@@ -85,12 +83,14 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     
     override func viewDidAppear(_ animated: Bool) {
         speechRec = SpeechRecognition(mode: mode)
+        speechRec.shinglAlgo = Shingles(baseText: text)
+        //shinglAlgo?.start(text: text)
         
          //убрать это
-        let ranges = shinglAlgo?.start(text: "давайте начнём")
-        for (start, end) in ranges! {
-            underLine(fromWord: start, toWord: end)
-        }
+//        let ranges = shinglAlgo?.start(text: "давайте начнём")
+//        for (start, end) in ranges! {
+//            underLine(fromWord: start, toWord: end)
+//        }
         
         micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(mode, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: speechRec)
         
@@ -134,10 +134,10 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         }
     }
     
-    func underLine(fromWord: String, toWord:String = "") {
+    func underLine(fromWord: String, toWord: String, index: Int = 0) {
         if let str = self.myMutableString {
-            let left = words.index(of: fromWord)!
-            if let right = words.index(of: toWord){
+            let left = words[index..<words.count].index(of: fromWord)!
+            if let right = words[left+1..<words.count].index(of: toWord) {
             
                 str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[right + 1] - numberOfSymbolsToWord[left]))
                 coursor = numberOfSymbolsToWord[right+1]
@@ -151,20 +151,9 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         }
     }
     
-    func recogniseFinalWith(result: RecognitionResult) {
-        DispatchQueue.main.async { [weak self] in
-            if let this = self {
-                if(!result.recognizedPhrase.isEmpty){
-                    let ranges = this.shinglAlgo?.start(text: (result.recognizedPhrase[0] as! RecognizedPhrase).inverseTextNormalizationResult)
-                    for (start, end) in ranges! {
-                        this.underLine(fromWord: start, toWord: end)
-                    }
-                }
-            }
-        }
-        
+    func recognitionStopped() {
+        self.statusLabel.text = "Запись остановлена."
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
