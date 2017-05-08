@@ -21,32 +21,32 @@ class Shingles {
     
     var canonizedWords: [String] = []
     
+    public static let stopWords = ["это", "как", "так", "и", "в", "над", "к", "до", "не", "на", "но", "за", "то", "с", "ли", "а", "во", "от", "со", "для", "о", "же", "ну", "вы", "бы", "что", "кто", "он", "она", "все", "его"]
+    
     init(baseText: String) {
         canonizedWords = self.canonize(text: baseText)
         originalTextHashes = hashedShinglesFrom(words: canonizedWords)
         
     }
     
-    func start(text: String) -> Respons? {
+    func start(text: String) -> [Respons] {
         let canonized = canonize(text: text)
         let hashes = hashedShinglesFrom(words: canonized)
         //var ranges: [String: String] = [:]
+        var resp = [Respons]()
         
         for i in 0..<hashes.count {
             if let h = originalTextHashes.index(of: hashes[i]) {
                 //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
-                let resp = Respons(startWord: canonizedWords[h], endWord: canonizedWords[h + shinglLength - 1], startIndex: h)
-                return resp
+                resp.append(Respons(startWord: canonizedWords[h], endWord: canonizedWords[h + shinglLength - 1], startIndex: h))
             }
         }
-        return nil
+        return resp
     }
     
     
     private func canonize(text: String) -> [String] {
         //let okayChars: Set<Character> = Set("")
-        
-        let stopWords = ["это", "как", "так", "и", "в", "над", "к", "до", "не", "на", "но", "за", "то", "с", "ли", "а", "во", "от", "со", "для", "о", "же", "ну", "вы", "бы", "что", "кто", "он", "она"]
         
         var res = text
         res = res.lowercased()
@@ -60,7 +60,7 @@ class Shingles {
             .joined()
             .components(separatedBy: CharacterSet(charactersIn: (" \n")))
             .filter { !$0.isEmpty }
-            .filter { !stopWords.contains($0)}
+            .filter { !Shingles.stopWords.contains($0)}
     }
     
     private func hashedShinglesFrom(words: [String]) -> [String] {

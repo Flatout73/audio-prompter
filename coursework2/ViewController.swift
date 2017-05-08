@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextViewDelegate {
     
     
     @IBOutlet weak var myText: UITextView!
@@ -16,7 +16,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        myText.delegate = self
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            myText.resignFirstResponder()
+            return false
+        }
+        return true
     }
 
     @IBAction func startRecognition(_ sender: UIButton) {
@@ -26,7 +34,7 @@ class ViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toRecognise",
-            let destinationVC = segue.destination as? SpeechControllerViewController {
+            let destinationVC = segue.destination as? SpeechViewController {
             destinationVC.text = myText.text
         }
     }

@@ -59,10 +59,10 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="108.39580209895054"/>
         </scene>
-        <!--Speech Controller View Controller-->
+        <!--Speech View Controller-->
         <scene sceneID="Oov-qC-cD9">
             <objects>
-                <viewController id="OKP-1z-AUG" customClass="SpeechControllerViewController" customModule="coursework2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OKP-1z-AUG" customClass="SpeechViewController" customModule="coursework2" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VHI-TI-Hpe"/>
                         <viewControllerLayoutGuide type="bottom" id="Set-Hr-J8G"/>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDelegate {
+class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     var micClient:  MicrophoneRecognitionClient?;
     var mode: SpeechRecognitionMode = SpeechRecognitionMode.longDictation
@@ -17,7 +17,8 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     
     var text: String = ""
     
-    var k: Int = 0 //курсор
+    var k: Int = 0 //курсор по словам
+    var coursor: Int = 0 //курсор по символам
     var myMutableString: NSMutableAttributedString?
     
     
@@ -84,7 +85,10 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
     override func viewDidAppear(_ animated: Bool) {
         speechRec = SpeechRecognition(mode: mode)
         speechRec.shinglAlgo = Shingles(baseText: text)
+        speechRec.bitapAlgo = BitapLevenshtein(text: text)
         //shinglAlgo?.start(text: text)
+        
+        //print(speechRec.bitapAlgo?.bitapStart(pattern: "известный"))
         
          //убрать это
 //        let ranges = shinglAlgo?.start(text: "давайте начнём")
@@ -105,32 +109,46 @@ class SpeechControllerViewController: UIViewController, SpeechRecognitionClassDe
         
         
     }
-    
-    var coursor: Int = 0
-    func recogniseWith(result:String) {
-    DispatchQueue.main.async {
 
-        if(self.k < self.words.count){
-            let w = self.words[self.k]
-       
-            if let str = self.myMutableString {
-            
-            for res in result.components(separatedBy: " "){
-                
-                if(res.lowercased() == w) {
-                    str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: self.coursor, length: self.wordsWithComma[self.k].characters.count))
-                    self.coursor += self.wordsWithComma[self.k].characters.count + 1
-                    self.k += 1
+    func recogniseWith(result:String) {
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
+                if(this.k < this.words.count){
+                    let w = this.words[this.k]
+                    
+                    if let str = this.myMutableString {
+                        
+                        for res in result.components(separatedBy: " "){
+                            
+                            if(res.lowercased() == w) {
+                                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: this.coursor, length: this.wordsWithComma[this.k].characters.count))
+                                this.coursor += this.wordsWithComma[this.k].characters.count + 1
+                                this.k += 1
+                            }
+                            
+                            //битап алгоритм
+                            if(this.coursor < this.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){
+                                if let index = this.speechRec.bitapAlgo?.bitapStart(pattern: res, start: this.coursor){
+                                    if let indexOfWord = this.numberOfSymbolsToWord.index(of: index){
+                                        
+                                        if((indexOfWord - this.k < 5)) {
+                                            this.myMutableString!.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
+                                            this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
+                                            this.k = indexOfWord + 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        this.baseText.attributedText = str
+                    } else {
+                        return
+                    }
+                } else {
+                    return
                 }
-                }
-        
-                self.baseText.attributedText = str
-            } else {
-            return
             }
-        } else {
-            return
-        }
         }
     }
     

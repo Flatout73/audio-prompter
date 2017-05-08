@@ -24,6 +24,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var stop: Bool = false
     
     var shinglAlgo: Shingles?
+    var bitapAlgo: BitapLevenshtein?
     
     init(mode: SpeechRecognitionMode) {
         self.mode = mode
@@ -76,7 +77,11 @@ class SpeechRecognition: SpeechRecognitionProtocol {
             if let this = self {
                 if(!result.recognizedPhrase.isEmpty){
                     if let ranges = this.shinglAlgo?.start(text: (result.recognizedPhrase[0] as! RecognizedPhrase).inverseTextNormalizationResult){
-                        this.delegate?.underLine(fromWord: ranges.startWord, toWord: ranges.endWord, index: ranges.startIndex)
+                        for range in ranges{
+                            this.delegate?.underLine(fromWord: range.startWord, toWord: range.endWord, index: range.startIndex)
+                        }
+                    } else {
+                        print("Нет совпадений по алгоритму шинглов")
                     }
                 }
             }
