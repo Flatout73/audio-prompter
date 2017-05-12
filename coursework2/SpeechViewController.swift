@@ -10,12 +10,17 @@ import UIKit
 
 class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
-    var micClient:  MicrophoneRecognitionClient?;
+    var micClient:  MicrophoneRecognitionClient?
     var mode: SpeechRecognitionMode = SpeechRecognitionMode.longDictation
 
     @IBOutlet weak var baseText: UITextView!
+    @IBOutlet weak var timer: UILabel!
+    
+    @IBOutlet weak var imageButton: UIButton!
     
     var text: String = ""
+    var colorText: UIColor = UIColor.cyan
+    var textSize: Float = 18
     
     var k: Int = 0 //курсор по словам
     var coursor: Int = 0 //курсор по символам
@@ -36,7 +41,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
 
         let attributes = [
             NSForegroundColorAttributeName: UIColor.darkText,
-            NSFontAttributeName: UIFont(name: "Helvetica Neue", size: 18.0)
+            NSFontAttributeName: UIFont(name: "Helvetica Neue", size: CGFloat(textSize))
         ]
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
@@ -62,24 +67,47 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
     }
     
-    
+    var counter = 3
+    var timerC = Timer()
     @IBAction func startRecognition(_ sender: Any) {
-        self.statusLabel.text = "Идет запись..."
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            if let this = self{
-                let status = this.micClient?.startMicAndRecognition()
-                if(status != 0 && !this.speechRec.stop) {
-                    print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status!))
-                    this.statusLabel.text = "Ошибка. Запись остановлена."
-                }
-            }
+        
+        if(speechRec.stop == true){
+            counter = 3
+            timer.text = String(3)
+            timerC = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(SpeechViewController.updateCounter), userInfo: nil, repeats: true)
+            timer.isHidden = false
+           
+        } else {
+            speechRec.stop = true
+            micClient?.endMicAndRecognition()
+            self.statusLabel.text = "Запись остановлена"
+            self.title = "Запись остановлена"
+            imageButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
         }
     }
     
-    @IBAction func stopRecognition(_ sender: Any) {
-        speechRec.stop = true
-        micClient?.endMicAndRecognition()
-        self.statusLabel.text = "Запись остановлена."
+    func updateCounter() {
+        if(counter == 0) {
+            timerC.invalidate()
+            self.statusLabel.text = "Идет запись..."
+            self.title = "Идет запись..."
+            timer.isHidden = true
+            speechRec.stop = false
+            imageButton.setImage(#imageLiteral(resourceName: "muted"), for: .normal)
+            DispatchQueue.main.async/*After(deadline: .now() + 3.0)*/ { [weak self] in
+                if let this = self{
+                    let status = this.micClient?.startMicAndRecognition()
+                    if(status != 0 && !this.speechRec.stop) {
+                        print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status!))
+                        this.statusLabel.text = "Ошибка. Запись остановлена."
+                        this.title = "Ошибка. Запись остановлена."
+                    }
+                }
+            }
+        } else {
+            timer.text = String(counter)
+            counter-=1
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -91,22 +119,19 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         //print(speechRec.bitapAlgo?.bitapStart(pattern: "известный"))
         
          //убрать это
-//        let ranges = shinglAlgo?.start(text: "давайте начнём")
-//        for (start, end) in ranges! {
-//            underLine(fromWord: start, toWord: end)
-//        }
+//        let ranges = speechRec.shinglAlgo?.start(text: "давайте начнём")
+//            underLine(fromWord: "давайте", toWord: "начнем")
         
         micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(mode, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: speechRec)
         
         if let mic = micClient {
-            //let status = mic.startMicAndRecognition();
             speechRec.micClient = mic
             speechRec.delegate = self
-//            if(status != 0) {
-//                print("Error starting audio: " + convertSpeechErrorToString(errorCode: status))
-//            }
+            
+            //            if(status != 0) {
+            //                print("Error starting audio: " + convertSpeechErrorToString(errorCode: status))
+            //            }
         }
-        
         
     }
 
@@ -121,7 +146,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                         for res in result.components(separatedBy: " "){
                             
                             if(res.lowercased() == w) {
-                                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: this.coursor, length: this.wordsWithComma[this.k].characters.count))
+                                str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.wordsWithComma[this.k].characters.count))
                                 this.coursor += this.wordsWithComma[this.k].characters.count + 1
                                 this.k += 1
                             }
@@ -132,7 +157,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                                     if let indexOfWord = this.numberOfSymbolsToWord.index(of: index){
                                         
                                         if((indexOfWord - this.k < 5)) {
-                                            this.myMutableString!.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
+                                            this.myMutableString!.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
                                             this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
                                             this.k = indexOfWord + 1
                                         }
@@ -157,11 +182,11 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             let left = words[index..<words.count].index(of: fromWord)!
             if let right = words[left+1..<words.count].index(of: toWord) {
             
-                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[right + 1] - numberOfSymbolsToWord[left]))
+                str.addAttribute(NSBackgroundColorAttributeName, value: colorText, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[right + 1] - numberOfSymbolsToWord[left]))
                 coursor = numberOfSymbolsToWord[right+1]
                 k = right + 1
             } else {
-                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.cyan, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[left + 1] - numberOfSymbolsToWord[left]))
+                str.addAttribute(NSBackgroundColorAttributeName, value: colorText, range: NSRange(location: numberOfSymbolsToWord[left], length: numberOfSymbolsToWord[left + 1] - numberOfSymbolsToWord[left]))
                 coursor = numberOfSymbolsToWord[left+1]
                 k = left + 1
             }
@@ -169,8 +194,14 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         }
     }
     
-    func recognitionStopped() {
-        self.statusLabel.text = "Запись остановлена."
+    func recognitionStopped(flag: Bool = true) {
+        if(flag) {
+            self.statusLabel.text = "Запись остановлена"
+            self.title = "Запись остановлена"
+        } else {
+            self.statusLabel.text = "Идет запись..."
+            self.title = "Идет запись..."
+        }
     }
     
     override func didReceiveMemoryWarning() {

@@ -10,7 +10,7 @@ import Foundation
 
 class BitapLevenshtein {
     var baseText:String
-    let k = 1 //расстояние левенштейна
+    let k = 1 //расстояние левенштейна(Хемминга)
     
     init(text: String) {
         self.baseText = text

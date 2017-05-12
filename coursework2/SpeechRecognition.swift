@@ -11,17 +11,17 @@ import UIKit
 protocol SpeechRecognitionClassDelegate {
     func recogniseWith(result: String)
     func underLine(fromWord: String, toWord: String, index: Int)
-    func recognitionStopped()
+    func recognitionStopped(flag: Bool)
 }
 
 class SpeechRecognition: SpeechRecognitionProtocol {
     
     var delegate: SpeechRecognitionClassDelegate?
     
-    var micClient: MicrophoneRecognitionClient?
+    weak var micClient: MicrophoneRecognitionClient?
     var mode: SpeechRecognitionMode
     
-    var stop: Bool = false
+    var stop: Bool = true
     
     var shinglAlgo: Shingles?
     var bitapAlgo: BitapLevenshtein?
@@ -50,11 +50,11 @@ class SpeechRecognition: SpeechRecognitionProtocol {
             (/*result.recognitionStatus == .endOfDictation ||*/
                 result.recognitionStatus == .dictationEndSilenceTimeout)
         
-        if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
-            if let mic = micClient {
-                mic.endMicAndRecognition()
-            }
-        }
+//        if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
+//            if let mic = micClient {
+//                mic.endMicAndRecognition()
+//            }
+//        }
         
         if(!isFinalDicationMessage){
         DispatchQueue.main.async {
@@ -113,9 +113,12 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     func onMicrophoneStatus(_ recording: Bool) {
         print("Microphone status changed: ", recording)
         if(!recording) {
-            micClient?.endMicAndRecognition()
-            delegate?.recognitionStopped()
-            
+            if(!stop){
+                micClient?.endMicAndRecognition()
+            }
+            delegate?.recognitionStopped(flag: true)
+        }else {
+            delegate?.recognitionStopped(flag: false)
         }
     }
     
