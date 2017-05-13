@@ -25,7 +25,6 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     
     var words: [String] = [] //words without punctuation
-    var wordsWithComma: [String] = [] //words with punctuation
     
     var numberOfSymbolsToWord = [Int]()
     
@@ -40,6 +39,8 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             NSForegroundColorAttributeName: UIColor.darkText,
             NSFontAttributeName: UIFont(name: "Helvetica Neue", size: CGFloat(textSize)) as Any
         ]
+
+        
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
         
@@ -51,20 +52,40 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             !x.isEmpty
         }
         
-        wordsWithComma = text.components(separatedBy: CharacterSet(charactersIn: (" \n")))
+        let wordsWithComma = text.components(separatedBy: CharacterSet(charactersIn: (" \n")))
         
-        numberOfSymbolsToWord.insert(0, at: 0)
-        for i in 1...wordsWithComma.count {
-            numberOfSymbolsToWord.insert(numberOfSymbolsToWord[i-1] + wordsWithComma[i-1].characters.count + 1, at: i)
+        
+//        numberOfSymbolsToWord.append(0)
+//        for i in 1...wordsWithComma.count {
+//            numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[i-1].characters.count + 1)
+//        }
+        
+        var spaces = 1
+        var lastNotEmpty = 0
+        numberOfSymbolsToWord.append(0)
+        for i in 1...wordsWithComma.count - 1 {
+            if(!wordsWithComma[i].isEmpty){
+                numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[lastNotEmpty].characters.count + spaces)
+                spaces = 1
+                lastNotEmpty = i
+            } else {
+                spaces += 1
+            }
         }
 
-        numberOfSymbolsToWord[numberOfSymbolsToWord.count - 1] -= 1
+        numberOfSymbolsToWord.insert(numberOfSymbolsToWord.last! + wordsWithComma.last!.characters.count, at: numberOfSymbolsToWord.count)
+        //numberOfSymbolsToWord[numberOfSymbolsToWord.count - 1] -= 1
+        
+        
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         speechRec = SpeechRecognition(baseText: text)
         speechRec.delegate = self
+        
+        recogniseWith(result: "Сегодня я начну")
+        //recogniseWith(result: "доклад")
         
         //убрать это
         //        let ranges = speechRec.shinglAlgo?.start(text: "давайте начнём")
@@ -119,15 +140,15 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         DispatchQueue.main.async { [weak self] in
             if let this = self {
                 if(this.position < this.words.count){
-                    let w = this.words[this.position]
                     
                     if let str = this.myMutableString {
                         
                         for res in result.components(separatedBy: " "){
+                            let w = this.words[this.position]
                             
                             if(res.lowercased() == w) {
-                                str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.wordsWithComma[this.position].characters.count))
-                                this.coursor += this.wordsWithComma[this.position].characters.count + 1
+                                str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[this.position + 1] - this.coursor))
+                                this.coursor = this.numberOfSymbolsToWord[this.position + 1]
                                 this.position += 1
                                 //битап алгоритм:
                             } else if(this.coursor < this.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){

@@ -65,18 +65,19 @@ class SpeechRecognition: SpeechRecognitionProtocol {
         }
         
         if(!isFinalDicationMessage){
-        DispatchQueue.main.async {
-            for i in 0 ..< result.recognizedPhrase.count {
-                let phrase: RecognizedPhrase? = result.recognizedPhrase[i] as? RecognizedPhrase
-                
-                print(self.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
-                
-                
+            DispatchQueue.main.async { [weak self] in
+                if let this = self {
+                    for i in 0 ..< result.recognizedPhrase.count {
+                        let phrase: RecognizedPhrase? = result.recognizedPhrase[i] as? RecognizedPhrase
+                        
+                        print(this.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
+                        
+                    }
                 }
             }
             recogniseFinalWith(result: result)
         }
-            
+        
         
     }
     
