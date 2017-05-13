@@ -92,6 +92,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     }
     
     func updateCounter() {
+        counter-=1
+        timer.text = String(counter)
+        
         if(counter == 0) {
             timerC.invalidate()
             self.statusLabel.text = "Идет запись..."
@@ -109,9 +112,6 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                     }
                 }
             }
-        } else {
-            timer.text = String(counter)
-            counter-=1
         }
     }
 

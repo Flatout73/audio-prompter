@@ -21,7 +21,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var delegate: SpeechRecognitionClassDelegate?
     
     lazy var micClient: MicrophoneRecognitionClient = {
-        return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
+        return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: "ru-RU", withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
     }()
     
     var stop: Bool = true
@@ -37,7 +37,10 @@ class SpeechRecognition: SpeechRecognitionProtocol {
 
     func onPartialResponseReceived(_ partialResult: String!) {
         
-        print(partialResult)
+        DispatchQueue.main.async {
+            print(partialResult)
+        }
+        
         delegate?.recogniseWith(result: partialResult)
     }
     
@@ -55,11 +58,11 @@ class SpeechRecognition: SpeechRecognitionProtocol {
             (/*result.recognitionStatus == .endOfDictation ||*/
                 result.recognitionStatus == .dictationEndSilenceTimeout)
         
-//        if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
-//            if let mic = micClient {
-//                mic.endMicAndRecognition()
-//            }
-//        }
+        if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
+            //if let mic = micClient {
+                micClient.endMicAndRecognition()
+            //}
+        }
         
         if(!isFinalDicationMessage){
         DispatchQueue.main.async {
