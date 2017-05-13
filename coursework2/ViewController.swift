@@ -16,6 +16,8 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     @IBOutlet weak var colorLabel: UILabel!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var idTextField: UITextField!
+    
     
     var backgroundColor: UIColor?
     let defaults = UserDefaults.standard
@@ -140,6 +142,38 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
         colorLabel.backgroundColor = sender.backgroundColor
         
     }
+    
+    @IBAction func getTextFromID(_ sender: Any) {
+
+        if let t = idTextField.text{
+            let url = URL(string: "https://audioprompter.herokuapp.com/text?id=" + t)
+            let task = URLSession.shared.dataTask(with: url!) { data, response, error in
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                guard let data = data else {
+                    print("Data is empty")
+                    return
+                }
+                
+                if let json = try! JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
+                    if let t = json["text"] as? String{
+                        OperationQueue.main.addOperation { [weak self] in
+                            if let this = self {
+                                this.myText.text = t
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            task.resume()
+            
+            
+        }
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -16,19 +16,24 @@ protocol SpeechRecognitionClassDelegate {
 
 class SpeechRecognition: SpeechRecognitionProtocol {
     
+    let mode = SpeechRecognitionMode.longDictation
+    
     var delegate: SpeechRecognitionClassDelegate?
     
-    weak var micClient: MicrophoneRecognitionClient?
-    var mode: SpeechRecognitionMode
+    lazy var micClient: MicrophoneRecognitionClient = {
+        return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: "ru-ru", withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
+    }()
     
     var stop: Bool = true
     
     var shinglAlgo: Shingles?
     var bitapAlgo: BitapLevenshtein?
     
-    init(mode: SpeechRecognitionMode) {
-        self.mode = mode
+    init(baseText text: String) {
+        shinglAlgo = Shingles(baseText: text)
+        bitapAlgo = BitapLevenshtein(text: text)
     }
+
 
     func onPartialResponseReceived(_ partialResult: String!) {
         
@@ -41,8 +46,8 @@ class SpeechRecognition: SpeechRecognitionProtocol {
         if(result.recognitionStatus != .recognitionSuccess) {
             print(result.recognitionStatus)
             //micClient?.endMicAndRecognition()
-            micClient?.audioStop()
-            micClient?.startMicAndRecognition()
+            micClient.audioStop()
+            micClient.startMicAndRecognition()
         }
         
         //micClient?.endMicAndRecognition();
@@ -114,7 +119,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
         print("Microphone status changed: ", recording)
         if(!recording) {
             if(!stop){
-                micClient?.endMicAndRecognition()
+                micClient.endMicAndRecognition()
             }
             delegate?.recognitionStopped(flag: true)
         }else {
