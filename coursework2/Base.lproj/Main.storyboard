@@ -96,8 +96,11 @@
                                 <rect key="frame" x="16" y="72" width="255" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="done"/>
                             </textField>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eo6-r3-LlU">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kir-5f-Kqu">
                                 <rect key="frame" x="279" y="71" width="80" height="30"/>
                                 <constraints>
@@ -138,7 +141,9 @@
                             <constraint firstItem="BlJ-78-Rlc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aOe-xg-m1M"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="width" secondItem="1vY-nT-TaR" secondAttribute="width" id="aOy-Wf-BML"/>
                             <constraint firstItem="Kir-5f-Kqu" firstAttribute="leading" secondItem="6ZZ-SD-a9e" secondAttribute="trailing" constant="8" id="aaE-dm-Ibw"/>
+                            <constraint firstItem="eo6-r3-LlU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="e95-l0-erP"/>
                             <constraint firstItem="1vY-nT-TaR" firstAttribute="baseline" secondItem="9v5-G7-gxP" secondAttribute="baseline" id="ebu-82-Fph"/>
+                            <constraint firstItem="eo6-r3-LlU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gIU-Ab-adt"/>
                             <constraint firstAttribute="leadingMargin" secondItem="6h4-JZ-Fad" secondAttribute="leading" id="lFw-la-GDW"/>
                             <constraint firstItem="FBo-TT-L5m" firstAttribute="leading" secondItem="LRM-Tc-laQ" secondAttribute="trailing" constant="8" id="oJJ-tr-0Yo"/>
                             <constraint firstItem="Ulk-qU-yZo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pXx-4L-c0f"/>
@@ -163,6 +168,7 @@
                         <outlet property="colorLabel" destination="BlJ-78-Rlc" id="mrY-hp-iR4"/>
                         <outlet property="doneButton" destination="htA-cy-ocd" id="Nex-fH-R2z"/>
                         <outlet property="idTextField" destination="6ZZ-SD-a9e" id="3T7-s4-cLL"/>
+                        <outlet property="indicator" destination="eo6-r3-LlU" id="cb2-QJ-RDr"/>
                         <outlet property="myText" destination="6h4-JZ-Fad" id="CPQ-b3-PSM"/>
                         <outlet property="textSizeField" destination="JuF-Fk-baO" id="6Km-9n-T5W"/>
                     </connections>

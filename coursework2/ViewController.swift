@@ -17,6 +17,7 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var idTextField: UITextField!
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     
     var backgroundColor: UIColor?
@@ -27,6 +28,7 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
         super.viewDidLoad()
         myText.delegate = self
         textSizeField.delegate = self
+        idTextField.delegate = self
         
         let size: Double = defaults.double(forKey: "textSize")
         if(size > 0){
@@ -49,6 +51,7 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
             myText.text = text
         }
     
+        indicator.hidesWhenStopped = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
@@ -144,6 +147,8 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     }
     
     @IBAction func getTextFromID(_ sender: Any) {
+        
+        indicator.startAnimating()
 
         if let t = idTextField.text{
             let url = URL(string: "https://audioprompter.herokuapp.com/text?id=" + t)
@@ -157,13 +162,24 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
                     return
                 }
                 
-                if let json = try! JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]{
-                    if let t = json["text"] as? String{
+                guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:Any],
+                    let t = json?["text"] as? String else {
                         OperationQueue.main.addOperation { [weak self] in
                             if let this = self {
-                                this.myText.text = t
+                                let alert = UIAlertController(title: "Ошибка", message: "Нет текста с таким ID", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                                this.present(alert, animated: true) {
+                                    this.indicator.stopAnimating()
+                                }
                             }
                         }
+                        return
+                }
+                
+                OperationQueue.main.addOperation { [weak self] in
+                    if let this = self {
+                        this.myText.text = t
+                        this.indicator.stopAnimating()
                     }
                     
                 }
@@ -181,7 +197,10 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textSizeField.resignFirstResponder()
+        textField.resignFirstResponder()
+        if(textField == idTextField) {
+            getTextFromID(textField)
+        }
         return true
     }
     
