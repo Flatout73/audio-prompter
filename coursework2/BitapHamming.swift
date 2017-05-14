@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BitapLevenshtein {
+class BitapHamming {
     var baseText:String
     let k = 1 //расстояние левенштейна(Хемминга)
     
@@ -27,7 +27,7 @@ class BitapLevenshtein {
             R.insert(~1, at: i)
         }
         
-        for i in 0...1200 {
+        for i in 0...10000 {
             patternMask.insert(~0, at: i)
         }
         
@@ -39,8 +39,11 @@ class BitapLevenshtein {
         
         t = 0
         for c in baseText.substring(from: baseText.index(baseText.startIndex, offsetBy:start)).characters{
+            //print(c, "–")
             var oldRd1 = R[0]
+            //print(c.unicodeScalarCodePoint())
             R[0] |= patternMask[c.unicodeScalarCodePoint()]
+            
             R[0] <<= 1
             
             for d in 1...k {

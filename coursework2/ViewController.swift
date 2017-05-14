@@ -150,11 +150,20 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
         
         indicator.startAnimating()
 
-        if let t = idTextField.text{
-            let url = URL(string: "https://audioprompter.herokuapp.com/text?id=" + t)
+        if let tf = idTextField.text{
+            let url = URL(string: "https://audioprompter.herokuapp.com/text?id=" + tf)
             let task = URLSession.shared.dataTask(with: url!) { data, response, error in
                 guard error == nil else {
                     print(error!)
+                    OperationQueue.main.addOperation { [weak self] in
+                        if let this = self {
+                            let alert = UIAlertController(title: "Ошибка", message: "Скорее всего, нет подключения к интернету", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                            this.present(alert, animated: true) {
+                                this.indicator.stopAnimating()
+                            }
+                        }
+                    }
                     return
                 }
                 guard let data = data else {

@@ -10,6 +10,7 @@ import UIKit
 
 protocol SpeechRecognitionClassDelegate {
     func recogniseWith(result: String)
+    func handle(respons: [Respons])
     func underLine(fromWord: String, toWord: String, index: Int)
     func recognitionStopped(flag: Bool)
 }
@@ -27,21 +28,24 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var stop: Bool = true
     
     var shinglAlgo: Shingles?
-    var bitapAlgo: BitapLevenshtein?
+    var bitapAlgo: BitapHamming?
     
     init(baseText text: String) {
         shinglAlgo = Shingles(baseText: text)
-        bitapAlgo = BitapLevenshtein(text: text)
+        bitapAlgo = BitapHamming(text: text)
     }
 
 
     func onPartialResponseReceived(_ partialResult: String!) {
         
-        DispatchQueue.main.async {
-            print(partialResult)
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
+                print(partialResult)
+                this.delegate?.recogniseWith(result: partialResult)
+            }
         }
         
-        delegate?.recogniseWith(result: partialResult)
+        
     }
     
     func onFinalResponseReceived(_ result: RecognitionResult!) {
@@ -72,29 +76,32 @@ class SpeechRecognition: SpeechRecognitionProtocol {
                         
                         print(this.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
                         
+                        this.recogniseFinalWith(result: phrase!.inverseTextNormalizationResult)
+                        
                     }
                 }
             }
-            recogniseFinalWith(result: result)
+            
         }
         
         
     }
     
-    func recogniseFinalWith(result: RecognitionResult) {
-        DispatchQueue.main.async { [weak self] in
-            if let this = self {
-                if(!result.recognizedPhrase.isEmpty){
-                    if let ranges = this.shinglAlgo?.start(text: (result.recognizedPhrase[0] as! RecognizedPhrase).inverseTextNormalizationResult){
-                        for range in ranges{
-                            this.delegate?.underLine(fromWord: range.startWord, toWord: range.endWord, index: range.startIndex)
-                        }
+    func recogniseFinalWith(result: String) {
+        //DispatchQueue.main.async { [weak self] in
+            //let this = self
+                if(!result.isEmpty){
+                    if let ranges = shinglAlgo?.start(text: result){
+//                        for range in ranges{
+//                            delegate?.underLine(fromWord: range.startWord, toWord: range.endWord, index: range.startIndex)
+//                        }
+                        delegate?.handle(respons: ranges)
                     } else {
                         print("Нет совпадений по алгоритму шинглов")
                     }
                 }
-            }
-        }
+        
+        //}
     }
     
     func convertSpeechRecoConfidenceEnumToString(confidence: Confidence) -> String {

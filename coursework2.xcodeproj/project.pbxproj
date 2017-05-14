@@ -14,7 +14,7 @@
 		714095451E78AE0B0042DDDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 714095431E78AE0B0042DDDB /* Main.storyboard */; };
 		7140954A1E78AE0B0042DDDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 714095481E78AE0B0042DDDB /* LaunchScreen.storyboard */; };
 		714095671E7A14F30042DDDB /* SpeechRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714095661E7A14F30042DDDB /* SpeechRecognition.swift */; };
-		719D87871EC100140086A8B9 /* BitapLevenshtein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719D87861EC100140086A8B9 /* BitapLevenshtein.swift */; };
+		719D87871EC100140086A8B9 /* BitapHamming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719D87861EC100140086A8B9 /* BitapHamming.swift */; };
 		71EEF35E1EC4FD0100ECC45B /* SpeechSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EEF35D1EC4FD0100ECC45B /* SpeechSDK.framework */; };
 		71EEF35F1EC4FD1000ECC45B /* SpeechSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EEF35D1EC4FD0100ECC45B /* SpeechSDK.framework */; };
 		71EEF3601EC4FD1000ECC45B /* SpeechSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71EEF35D1EC4FD0100ECC45B /* SpeechSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -47,7 +47,7 @@
 		7140954B1E78AE0B0042DDDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		714095541E78AF960042DDDB /* coursework2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "coursework2-Bridging-Header.h"; sourceTree = "<group>"; };
 		714095661E7A14F30042DDDB /* SpeechRecognition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognition.swift; sourceTree = "<group>"; };
-		719D87861EC100140086A8B9 /* BitapLevenshtein.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitapLevenshtein.swift; sourceTree = "<group>"; };
+		719D87861EC100140086A8B9 /* BitapHamming.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitapHamming.swift; sourceTree = "<group>"; };
 		71EEF35D1EC4FD0100ECC45B /* SpeechSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpeechSDK.framework; sourceTree = "<group>"; };
 		71EEF3611EC522BE00ECC45B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71FBF9841E82C50C008B7903 /* SpeechViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 				714095541E78AF960042DDDB /* coursework2-Bridging-Header.h */,
 				714095661E7A14F30042DDDB /* SpeechRecognition.swift */,
 				71FBF9841E82C50C008B7903 /* SpeechViewController.swift */,
-				719D87861EC100140086A8B9 /* BitapLevenshtein.swift */,
+				719D87861EC100140086A8B9 /* BitapHamming.swift */,
 			);
 			path = coursework2;
 			sourceTree = "<group>";
@@ -190,7 +190,7 @@
 				714095671E7A14F30042DDDB /* SpeechRecognition.swift in Sources */,
 				710C61E21E96F89600DFC7B1 /* Shingles.swift in Sources */,
 				71FBF9851E82C50C008B7903 /* SpeechViewController.swift in Sources */,
-				719D87871EC100140086A8B9 /* BitapLevenshtein.swift in Sources */,
+				719D87871EC100140086A8B9 /* BitapHamming.swift in Sources */,
 				714095401E78AE0B0042DDDB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,6 +14,8 @@ struct Respons {
     var startIndex: Int
 }
 
+//можно проиндексировать сразу все слова на соотвестиве из алгоритма шинглов на исходных текст
+
 class Shingles {
     
     var originalTextHashes: [String] = []
@@ -36,9 +38,11 @@ class Shingles {
         var resp = [Respons]()
         
         for i in 0..<hashes.count {
-            if let h = originalTextHashes.index(of: hashes[i]) {
-                //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
-                resp.append(Respons(startWord: canonizedWords[h], endWord: canonizedWords[h + shinglLength - 1], startIndex: h))
+            for j in 0..<originalTextHashes.count{
+                if (hashes[i] == originalTextHashes[j]) {
+                    //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
+                    resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: j))
+                }
             }
         }
         return resp
