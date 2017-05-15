@@ -30,7 +30,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     
     //TODO: заполнить этот массив
-    var indexesOfSaidWords = [Int]()
+    var indexesOfSaidWords: Set<Int> = []
     
     var speechRec: SpeechRecognition!
     
@@ -92,7 +92,10 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
             //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
-        speechRec.recogniseFinalWith(result: "моя биологическая мать")
+        speechRec.recogniseFinalWith(result: "мальчик. возьмете его")
+         speechRec.recogniseFinalWith(result: "моя биологическая мать")
+        speechRec.recogniseFinalWith(result: "решила отдать меня")
+        recogniseWith(result: "на усыновление")
         
         recogniseWith(result: "завораживало")
         //recogniseWith(result: "доклад")
@@ -160,6 +163,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                         str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[this.position + 1] - this.coursor))
                         this.coursor = this.numberOfSymbolsToWord[this.position + 1]
                         this.position += 1
+                        indexesOfSaidWords.insert(position)
                         //битап алгоритм:
                     } else if(this.coursor < this.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){
                         print("bitap")
@@ -171,6 +175,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                                     str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
                                     this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
                                     this.position = indexOfWord + 1
+                                    for i in position...indexOfWord {
+                                        indexesOfSaidWords.insert(i)
+                                    }
                                 }
                             }
                         }
@@ -197,7 +204,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         var sortedRespons = respons.sorted{
             return $0.startIndex < $1.startIndex
         }
-        var newRanges = sortedRespons
+        var newRanges: [Respons] = sortedRespons
         
         for i in 0..<sortedRespons.count {
             if(!isFirst || sortedRespons[i].startIndex >= position) {
@@ -206,7 +213,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                     let left = words[sortedRespons[i].startIndex..<words.count].index(of: sortedRespons[i].startWord)!
                     let right = words[left+1..<words.count].index(of: sortedRespons[i].endWord)!
                     underLine(fromIndex: left, toIndex: right)
-                    newRanges.remove(at: i)
+                    newRanges = newRanges.filter { $0.startIndex != sortedRespons[i].startIndex }
                     nextPhrase = true
                     previousIndex = right
                 } else {
@@ -224,9 +231,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                     let right = words[left+1..<words.count].index(of: newRanges[i].endWord)!
                     if(!(indexesOfSaidWords.contains(left) && indexesOfSaidWords.contains(right))) {
                         underLine(fromIndex: left, toIndex: right)
-                        nextPhrase = true
+                        //nextPhrase = true
                         previousIndex = right
-                }
+                    }
                 } else {
                     return
                 }
@@ -251,6 +258,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             str.addAttribute(NSBackgroundColorAttributeName, value: colorText, range: NSRange(location: numberOfSymbolsToWord[fromIndex], length: numberOfSymbolsToWord[toIndex + 1] - numberOfSymbolsToWord[fromIndex]))
             coursor = numberOfSymbolsToWord[toIndex+1]
             position = toIndex + 1
+            for i in fromIndex...toIndex{
+                indexesOfSaidWords.insert(i)
+            }
             
             baseText.attributedText = str
         }

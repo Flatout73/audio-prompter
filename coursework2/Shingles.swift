@@ -23,11 +23,31 @@ class Shingles {
     
     var canonizedWords: [String] = []
     
-    public static let stopWords = ["это", "как", "так", "и", "в", "над", "к", "до", "не", "на", "но", "за", "то", "с", "ли", "а", "во", "от", "со", "для", "о", "же", "ну", "вы", "бы", "что", "кто", "он", "она", "все", "его"]
+    var indexOfCanonizedToBase: [Int] = []
+    
+    public static let stopWords = ["это", "как", "так", "и", "в", "над", "к", "до", "не", "на", "но", "за", "то", "с", "ли", "а", "во", "от", "со", "для", "о", "же", "ну", "вы", "бы", "что", "кто", "он", "она", "все"]
     
     init(baseText: String) {
         canonizedWords = self.canonize(text: baseText)
         originalTextHashes = hashedShinglesFrom(words: canonizedWords)
+        
+        let tempText = baseText.replacingOccurrences(of: "ё", with: "е")
+        let tempWords = tempText
+                .lowercased()
+                .components(separatedBy: .punctuationCharacters)
+                .joined()
+                .components(separatedBy: CharacterSet(charactersIn: (" \n")))
+                .filter { !$0.isEmpty }
+        
+        var k = 0
+        for i in 0..<tempWords.count {
+            if(canonizedWords[k] == tempWords[i]) {
+                indexOfCanonizedToBase.insert(i, at: k)
+                print(k, i)
+                k += 1
+            }
+            
+        }
         
     }
     
@@ -41,7 +61,7 @@ class Shingles {
             for j in 0..<originalTextHashes.count{
                 if (hashes[i] == originalTextHashes[j]) {
                     //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
-                    resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: j))
+                    resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: indexOfCanonizedToBase[j]))
                 }
             }
         }
@@ -54,9 +74,6 @@ class Shingles {
         
         var res = text
         res = res.lowercased()
-        //        for sWord in stopWords {
-        //            res = res.replacingOccurrences(of: sWord, with: "", options: .diacriticInsensitive, range: nil)
-        //        }
         
         res = res.replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
         return res
