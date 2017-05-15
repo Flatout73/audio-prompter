@@ -28,8 +28,6 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     var numberOfSymbolsToWord = [Int]()
     
-    
-    //TODO: заполнить этот массив
     var indexesOfSaidWords: Set<Int> = []
     
     var speechRec: SpeechRecognition!
@@ -54,6 +52,8 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         let wordsWithEmpty = text
                             .lowercased()
                             .replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
+                            .components(separatedBy: .punctuationCharacters)
+                            .joined()
                             .components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
@@ -89,18 +89,18 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         speechRec = SpeechRecognition(baseText: text)
         speechRec.delegate = self
         
-    
+    //убрать это
             //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
-        speechRec.recogniseFinalWith(result: "мальчик. возьмете его")
-         speechRec.recogniseFinalWith(result: "моя биологическая мать")
-        speechRec.recogniseFinalWith(result: "решила отдать меня")
-        recogniseWith(result: "на усыновление")
-        
-        recogniseWith(result: "завораживало")
+//        speechRec.recogniseFinalWith(result: "мальчик. возьмете его")
+//         speechRec.recogniseFinalWith(result: "моя биологическая мать")
+//        speechRec.recogniseFinalWith(result: "решила отдать меня")
+//        recogniseWith(result: "на усыновление")
+//        
+//        recogniseWith(result: "завораживало")
         //recogniseWith(result: "доклад")
         
-        //убрать это
+        
         //        let ranges = speechRec.shinglAlgo?.start(text: "давайте начнём")
         //            underLine(fromWord: "давайте", toWord: "начнем")
         
@@ -210,8 +210,10 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             if(!isFirst || sortedRespons[i].startIndex >= position) {
                 if(isFirst || sortedRespons[i].startIndex - previousIndex < 3){
                     isFirst = false
-                    let left = words[sortedRespons[i].startIndex..<words.count].index(of: sortedRespons[i].startWord)!
-                    let right = words[left+1..<words.count].index(of: sortedRespons[i].endWord)!
+                    guard let left = words[sortedRespons[i].startIndex..<words.count].index(of: sortedRespons[i].startWord), let right = words[left+1..<words.count].index(of: sortedRespons[i].endWord) else {
+                        print("Не верные значения в алгоритме шинглов (слово не найдено)")
+                        return
+                    }
                     underLine(fromIndex: left, toIndex: right)
                     newRanges = newRanges.filter { $0.startIndex != sortedRespons[i].startIndex }
                     nextPhrase = true
@@ -227,8 +229,11 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             for i in 0..<newRanges.count {
                 if(isFirst || newRanges[i].startIndex - previousIndex < 3){
                     isFirst = false
-                    let left = words[newRanges[i].startIndex..<words.count].index(of: newRanges[i].startWord)!
-                    let right = words[left+1..<words.count].index(of: newRanges[i].endWord)!
+                    guard let left = words[newRanges[i].startIndex..<words.count].index(of: newRanges[i].startWord),
+                        let right = words[left+1..<words.count].index(of: newRanges[i].endWord) else {
+                            print("Не верные значения в алгоритме шинглов (слово не найдено)")
+                            return
+                    }
                     if(!(indexesOfSaidWords.contains(left) && indexesOfSaidWords.contains(right))) {
                         underLine(fromIndex: left, toIndex: right)
                         //nextPhrase = true
@@ -242,13 +247,15 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     }
     
     func underLine(fromWord: String, toWord: String, index: Int = 0) {
-        let left = words[index..<words.count].index(of: fromWord)!
-        
-        if let right = words[left+1..<words.count].index(of: toWord) {
+        if let left = words[index..<words.count].index(of: fromWord){
             
-            underLine(fromIndex: left, toIndex: right)
+            if let right = words[left+1..<words.count].index(of: toWord) {
+                underLine(fromIndex: left, toIndex: right)
+            } else {
+                underLine(fromIndex: left, toIndex: left)
+            }
         } else {
-            underLine(fromIndex: left, toIndex: left)
+            print("Не удалось найти индекс слова для выделения!")
         }
     }
     

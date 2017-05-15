@@ -12,9 +12,15 @@ struct Respons {
     var startWord: String
     var endWord: String
     var startIndex: Int
+    var endindex: Int
+    
+//    init(startWord: String, endWord: String, startIndex:Int) {
+//        self.startWord = startWord
+//        self.endWord = endWord
+//        self.startIndex = startIndex
+//    }
 }
 
-//можно проиндексировать сразу все слова на соотвестиве из алгоритма шинглов на исходных текст
 
 class Shingles {
     
@@ -25,6 +31,8 @@ class Shingles {
     
     var indexOfCanonizedToBase: [Int] = []
     
+    
+    //TODO: Добавить слова с сайта
     public static let stopWords = ["это", "как", "так", "и", "в", "над", "к", "до", "не", "на", "но", "за", "то", "с", "ли", "а", "во", "от", "со", "для", "о", "же", "ну", "вы", "бы", "что", "кто", "он", "она", "все"]
     
     init(baseText: String) {
@@ -61,7 +69,8 @@ class Shingles {
             for j in 0..<originalTextHashes.count{
                 if (hashes[i] == originalTextHashes[j]) {
                     //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
-                    resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: indexOfCanonizedToBase[j]))
+                    resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: indexOfCanonizedToBase[j], endindex: indexOfCanonizedToBase[j + shinglLength - 1]))
+                    
                 }
             }
         }
