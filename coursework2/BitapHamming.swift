@@ -10,17 +10,22 @@ import Foundation
 
 class BitapHamming {
     var baseText:String
-    let k = 1 //расстояние левенштейна(Хемминга)
+    let k = 2 //расстояние левенштейна(Хемминга)
     
     init(text: String) {
         self.baseText = text
     }
 
+    //можно попробовать возвращать nil в случае неуспеха
     func bitapStart(pattern: String, start: Int = 0) -> Int{
         var result = -1
         let m = pattern.characters.count
         var patternMask = [Int]()
         
+        if(m > 31) {
+            print("Pattern too long")
+            return -1
+        }
         var R = [Int]()
         
         for i in 0...k {

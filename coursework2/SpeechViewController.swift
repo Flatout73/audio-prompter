@@ -30,7 +30,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     var indexesOfSaidWords: Set<Int> = []
     
-    var speechRec: SpeechRecognition!
+    var speechRec: SpeechRecognition?
     
     @IBOutlet weak var statusLabel: UILabel!
 
@@ -85,15 +85,15 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         speechRec = SpeechRecognition(baseText: text)
-        speechRec.delegate = self
+        speechRec?.delegate = self
         
     //убрать это
             //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
 //        speechRec.recogniseFinalWith(result: "мальчик. возьмете его")
-//         speechRec.recogniseFinalWith(result: "моя биологическая мать")
+         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
 //        speechRec.recogniseFinalWith(result: "решила отдать меня")
 //        recogniseWith(result: "на усыновление")
 //        
@@ -110,15 +110,16 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     var timerC = Timer()
     @IBAction func startRecognition(_ sender: Any) {
         
-        if(speechRec.stop == true){
+        if(speechRec?.stop == true){
+            speechRec?.stop = false
             counter = 3
             timer.text = String(3)
             timerC = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(SpeechViewController.updateCounter), userInfo: nil, repeats: true)
             timer.isHidden = false
            
         } else {
-            speechRec.stop = true
-            speechRec.micClient.endMicAndRecognition()
+            speechRec?.stop = true
+            speechRec?.micClient.endMicAndRecognition()
             self.statusLabel.text = "Запись остановлена"
             self.title = "Запись остановлена"
             imageButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
@@ -134,15 +135,19 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             self.statusLabel.text = "Идет запись..."
             self.title = "Идет запись..."
             timer.isHidden = true
-            speechRec.stop = false
+            speechRec?.stop = false
             imageButton.setImage(#imageLiteral(resourceName: "muted"), for: .normal)
             DispatchQueue.main.async/*After(deadline: .now() + 3.0)*/ { [weak self] in
                 if let this = self{
-                    let status = this.speechRec.micClient.startMicAndRecognition()
-                    if(status != 0 && !this.speechRec.stop) {
-                        print("Error starting audio: " + this.convertSpeechErrorToString(errorCode: status))
+                    if let speechRec = this.speechRec{
+                    let status = speechRec.micClient.startMicAndRecognition()
+                    if(status != 0 && !speechRec.stop) {
+                        print("Error starting audio: " + speechRec.convertSpeechErrorToString(errorCode: status))
                         this.statusLabel.text = "Ошибка. Запись остановлена."
                         this.title = "Ошибка. Запись остановлена."
+                        speechRec.stop = true
+                        this.imageButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
+                    }
                     }
                 }
             }
@@ -166,18 +171,19 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                         indexesOfSaidWords.insert(position)
                         //битап алгоритм:
                     } else if(this.coursor < this.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){
-                        print("bitap")
                         //запускаем битэп алгоритм с текущей позиции
-                        if let index = this.speechRec.bitapAlgo?.bitapStart(pattern: res, start: this.coursor){
+                        if let index = this.speechRec?.bitapAlgo?.bitapStart(pattern: res, start: this.coursor){
                             if let indexOfWord = this.numberOfSymbolsToWord.index(of: index){
                                 //разница между текущим словом и распознанным
                                 if((indexOfWord - this.position < 5)) {
                                     str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
-                                    this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
-                                    this.position = indexOfWord + 1
+                                    
                                     for i in position...indexOfWord {
                                         indexesOfSaidWords.insert(i)
                                     }
+                                    this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
+                                    this.position = indexOfWord + 1
+                                    print("bitap", res)
                                 }
                             }
                         }
@@ -270,6 +276,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             }
             
             baseText.attributedText = str
+            
+            let range = NSMakeRange(numberOfSymbolsToWord[fromIndex] - 1, 0)
+            baseText.scrollRangeToVisible(range)
         }
         
     }
@@ -278,39 +287,24 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         if(flag) {
             self.statusLabel.text = "Запись остановлена"
             self.title = "Запись остановлена"
+            self.imageButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
         } else {
             self.statusLabel.text = "Идет запись..."
             self.title = "Идет запись..."
         }
     }
     
+    func errorShow(error: String) {
+        let alert = UIAlertController(title: "Ошибка", message: "Возможно нет подключения к интернету: " + error, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func convertSpeechErrorToString(errorCode: OSStatus) -> String {
-        switch (SpeechClientStatus(rawValue: errorCode)!) {
-        case .securityFailed:         return "SpeechClientStatus_SecurityFailed"
-        case .loginFailed:            return "SpeechClientStatus_LoginFailed"
-        case .timeout:                return "SpeechClientStatus_Timeout"
-        case .connectionFailed:       return "SpeechClientStatus_ConnectionFailed"
-        case .nameNotFound:           return "SpeechClientStatus_NameNotFound"
-        case .invalidService:         return "SpeechClientStatus_InvalidService"
-        case .invalidProxy:           return "SpeechClientStatus_InvalidProxy"
-        case .badResponse:            return "SpeechClientStatus_BadResponse"
-        case .internalError:          return "SpeechClientStatus_InternalError"
-        case .authenticationError:    return "SpeechClientStatus_AuthenticationError"
-        case .authenticationExpired:  return "SpeechClientStatus_AuthenticationExpired"
-        case .limitsExceeded:         return "SpeechClientStatus_LimitsExceeded"
-        case .audioOutputFailed:      return "SpeechClientStatus_AudioOutputFailed"
-        case .microphoneInUse:        return "SpeechClientStatus_MicrophoneInUse"
-        case .microphoneUnavailable:  return "SpeechClientStatus_MicrophoneUnavailable"
-        case .microphoneStatusUnknown:return "SpeechClientStatus_MicrophoneStatusUnknown"
-        case .invalidArgument:        return "SpeechClientStatus_InvalidArgument"
-        }
-        return "Unknown error: \(errorCode)"
-    }
+
 
     /*
     // MARK: - Navigation

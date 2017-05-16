@@ -25,7 +25,7 @@ struct Respons {
 class Shingles {
     
     var originalTextHashes: [String] = []
-    let shinglLength = 2
+    let shinglLength = 4
     
     var canonizedWords: [String] = []
     
@@ -51,8 +51,12 @@ class Shingles {
         for i in 0..<tempWords.count {
             if(canonizedWords[k] == tempWords[i]) {
                 indexOfCanonizedToBase.insert(i, at: k)
-                print(k, i)
+                //print(k, i)
                 k += 1
+            }
+            
+            if(k == canonizedWords.count) {
+                break
             }
             
         }
@@ -70,6 +74,7 @@ class Shingles {
                 if (hashes[i] == originalTextHashes[j]) {
                     //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
                     resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: indexOfCanonizedToBase[j], endindex: indexOfCanonizedToBase[j + shinglLength - 1]))
+                    print("Shingles", resp.last!.startWord, resp.last!.endWord)
                     
                 }
             }
