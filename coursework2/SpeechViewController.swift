@@ -53,13 +53,15 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                             .lowercased()
                             .replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
                             .components(separatedBy: .punctuationCharacters)
-                            .joined()
-                            .components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
+                            .joined(separator: " ")
+                            .components(separatedBy: .whitespacesAndNewlines)
+                            //.joined(separator: " ")
+                            //.components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
         }
         
-        let wordsWithComma = text.components(separatedBy: CharacterSet(charactersIn: (" \n")))
+        let wordsWithComma = text.components(separatedBy: .whitespacesAndNewlines)
         
         
 //        numberOfSymbolsToWord.append(0)
@@ -70,11 +72,22 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         var spaces = 1
         var lastNotEmpty = 0
         numberOfSymbolsToWord.append(0)
+        if(wordsWithComma[0].characters.contains("-")){
+            numberOfSymbolsToWord.append(0)
+        }
         for i in 1...wordsWithComma.count - 1 {
             if(!wordsWithComma[i].isEmpty){
-                numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[lastNotEmpty].characters.count + spaces)
-                spaces = 1
-                lastNotEmpty = i
+                if(!(wordsWithComma[i] == "-" || wordsWithComma[i] == "−" || wordsWithComma[i] == "–" || wordsWithComma[i] == "—")) {
+                    numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[lastNotEmpty].characters.count + spaces)
+                    if(wordsWithComma[i].characters.contains("-")) {
+                        numberOfSymbolsToWord.append(numberOfSymbolsToWord.last!)
+                        }
+                    spaces = 1
+                    lastNotEmpty = i
+                    
+                } else {
+                    spaces += 2
+                }
             } else {
                 spaces += 1
             }
@@ -92,8 +105,8 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     //убрать это
             //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
-//        speechRec.recogniseFinalWith(result: "мальчик. возьмете его")
-         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
+        speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
+//         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
 //        speechRec.recogniseFinalWith(result: "решила отдать меня")
 //        recogniseWith(result: "на усыновление")
 //        
