@@ -32,6 +32,8 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     
     var speechRec: SpeechRecognition?
     
+    let serialQueue = DispatchQueue(label: "recognition")
+    
     @IBOutlet weak var statusLabel: UILabel!
 
     override func viewDidLoad() {
@@ -47,7 +49,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
 
-        
+        //serialQueue.maxConcurrentOperationCount = 1
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,8 +60,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             .components(separatedBy: .punctuationCharacters)
             .joined(separator: " ")
             .components(separatedBy: .whitespacesAndNewlines)
-        //.joined(separator: " ")
-        //.components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
+
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
         }
@@ -96,14 +97,14 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         speechRec?.delegate = self
         
     //убрать это
-            //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
+ //           recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
-        //speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
+ //       speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
 //         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
- //      speechRec?.recogniseFinalWith(result: "Многое из того, что я открыл для себя в те времена, подчиняясь своему любопытсву и интуиции")
+//       speechRec?.recogniseFinalWith(result: "Поэтому я решил бросить")
 //        recogniseWith(result: "на усыновление")
 //        
-//        recogniseWith(result: "завораживало")
+//        speechRec?.onPartialResponseReceived("учебу")
         //recogniseWith(result: "доклад")
         
         
@@ -162,101 +163,141 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
 
     func recogniseWith(result:String) {
         
-        self.statusLabel.text = result
-        
-        //TODO: Убрать это
-        let this = self
-        
-        if let str = this.myMutableString {
+        serialQueue.async {
             
-            for res in result.replacingOccurrences(of: "ё", with: "е", options: .caseInsensitive, range: nil).components(separatedBy: " "){
-                if(this.position < this.words.count){
-                    let w = this.words[this.position]
+            self.statusLabel.text = result
+            
+            for res in result.replacingOccurrences(of: "ё", with: "е", options: .caseInsensitive, range: nil).replacingOccurrences(of: "-", with: " ").components(separatedBy: " ") {
+                if(self.position < self.words.count){
+                    let w = self.words[self.position]
                     
                     if(res.lowercased() == w) {
-                        print("1 by 1")
-                        str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[this.position + 1] - this.coursor))
-                        this.coursor = this.numberOfSymbolsToWord[this.position + 1]
-                        this.position += 1
-                        indexesOfSaidWords.insert(position)
-                        //битап алгоритм:
-                    } else if(this.coursor < this.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){
-                        //запускаем битэп алгоритм с текущей позиции
-                        if let index = this.speechRec?.bitapAlgo?.bitapStart(pattern: res, start: this.coursor){
-                            if let indexOfWord = this.numberOfSymbolsToWord.index(of: index){
-                                //разница между текущим словом и распознанным
-                                if((indexOfWord - this.position < 5)) {
-                                    str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.coursor, length: this.numberOfSymbolsToWord[indexOfWord + 1] - this.coursor))
+                        let c = self.coursor
+                        let p = self.position
+                        self.coursor = self.numberOfSymbolsToWord[self.position + 1]
+                        self.position += 1
+                        self.indexesOfSaidWords.insert(self.position)
+                        
+                        DispatchQueue.main.async { [weak self] in
+                            if let this = self {
+                                print("1 by 1")
+                                if let str = this.myMutableString {
+                                    str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: c, length: this.numberOfSymbolsToWord[p + 1] - c))
                                     
-                                    for i in position...indexOfWord {
-                                        indexesOfSaidWords.insert(i)
+                                    this.baseText.attributedText = str
+                                }
+                            }
+                        }
+                        
+                        //битап алгоритм:
+                    } else if(self.coursor < self.text.characters.count && !Shingles.stopWords.contains(res) && res.characters.count > 3){
+                        //запускаем битэп алгоритм с текущей позиции
+                        if let index = self.speechRec?.bitapAlgo?.bitapStart(pattern: res, start: self.coursor){
+                            if let indexOfWord = self.numberOfSymbolsToWord.index(of: index){
+                                //разница между текущим словом и распознанным
+                                if((indexOfWord - self.position < 5)) {
+                                    let c = self.coursor
+                                    
+                                    for i in self.position...indexOfWord {
+                                        self.indexesOfSaidWords.insert(i)
                                     }
-                                    this.coursor = this.numberOfSymbolsToWord[indexOfWord + 1]
-                                    this.position = indexOfWord + 1
-                                    print("bitap", res)
+                                    self.coursor = self.numberOfSymbolsToWord[indexOfWord + 1]
+                                    self.position = indexOfWord + 1
+                                    DispatchQueue.main.async { [weak self] in
+                                        if let this = self {
+                                            if let str = this.myMutableString {
+                                                str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: c, length: this.numberOfSymbolsToWord[indexOfWord + 1] - c))
+                                                
+                                                
+                                                this.baseText.attributedText = str
+                                            }
+                                        }
+                                        print("bitap", res)
+                                    }
                                 }
                             }
                         }
                     }
+                    
                 } else {
                     print("Выход за границы текста")
                 }
                 
-                this.baseText.attributedText = str
             }
-        } else {
-            print("Не удатся получить доступ к textview")
         }
         
-    }
-    
+}
+
     func handle(respons: [Respons]) {
-        print("shingles")
-        
-        var nextPhrase = false
-        var previousIndex = 0
-        var isFirst = true
-        
-        var sortedRespons = respons.sorted{
-            return $0.startIndex < $1.startIndex
-        }
-        var newRanges: [Respons] = sortedRespons
-        
-        for i in 0..<sortedRespons.count {
-            if(!isFirst || sortedRespons[i].startIndex >= position) {
-                if(isFirst || sortedRespons[i].startIndex - previousIndex < 3){
-                    isFirst = false
-                    guard let left = words[sortedRespons[i].startIndex..<words.count].index(of: sortedRespons[i].startWord), let right = words[left+1..<words.count].index(of: sortedRespons[i].endWord) else {
-                        print("Не верные значения в алгоритме шинглов (слово не найдено)")
-                        return
-                    }
-                    underLine(fromIndex: left, toIndex: right)
-                    newRanges = newRanges.filter { $0.startIndex != sortedRespons[i].startIndex }
-                    nextPhrase = true
-                    previousIndex = right
-                } else {
-                    return
+        serialQueue.async  { [weak self] in
+            if let this = self{
+                
+                print("shingles")
+                
+                var nextPhrase = false
+                var previousIndex = 0
+                var isFirst = true
+                
+                var sortedRespons = respons.sorted{
+                    return $0.startIndex < $1.startIndex
                 }
-            }
-        }
-        
-        isFirst = true
-        if(!nextPhrase) {
-            for i in 0..<newRanges.count {
-                if(isFirst || newRanges[i].startIndex - previousIndex < 3){
-                    isFirst = false
-                    guard let left = words[newRanges[i].startIndex..<words.count].index(of: newRanges[i].startWord),
-                        let right = words[left+1..<words.count].index(of: newRanges[i].endWord) else {
-                            print("Не верные значения в алгоритме шинглов (слово не найдено)")
+                var newRanges: [Respons] = sortedRespons
+                
+                for i in 0..<sortedRespons.count {
+                    if(!isFirst || sortedRespons[i].startIndex >= this.position) {
+                        if(isFirst || sortedRespons[i].startIndex - previousIndex < 3){
+                            isFirst = false
+                            guard let left = this.words[sortedRespons[i].startIndex..<this.words.count].index(of: sortedRespons[i].startWord), let right = this.words[left+1..<this.words.count].index(of: sortedRespons[i].endWord) else {
+                                print("Неверные значения в алгоритме шинглов (слово не найдено)")
+                                return
+                            }
+                            this.coursor = this.numberOfSymbolsToWord[right+1]
+                            this.position = right + 1
+                            for i in left...right{
+                                this.indexesOfSaidWords.insert(i)
+                            }
+                            DispatchQueue.main.async { [weak self] in
+                                if let this = self{
+                                    this.underLine(fromIndex: left, toIndex: right)
+                                }
+                            }
+                            newRanges = newRanges.filter { $0.startIndex != sortedRespons[i].startIndex }
+                            nextPhrase = true
+                            previousIndex = right
+                        } else {
                             return
+                        }
                     }
-                    if(!(indexesOfSaidWords.contains(left) && indexesOfSaidWords.contains(right))) {
-                        underLine(fromIndex: left, toIndex: right)
-                        //nextPhrase = true
-                        previousIndex = right
+                }
+                
+                isFirst = true
+                if(!nextPhrase) {
+                    for i in 0..<newRanges.count {
+                        if(isFirst || newRanges[i].startIndex - previousIndex < 3){
+                            isFirst = false
+                            guard let left = this.words[newRanges[i].startIndex..<this.words.count].index(of: newRanges[i].startWord),
+                                let right = this.words[left+1..<this.words.count].index(of: newRanges[i].endWord) else {
+                                    print("Не верные значения в алгоритме шинглов (слово не найдено)")
+                                    return
+                            }
+                            if(!(this.indexesOfSaidWords.contains(left) && this.indexesOfSaidWords.contains(right))) {
+                                
+                                this.coursor = this.numberOfSymbolsToWord[right+1]
+                                this.position = right + 1
+                                for i in left...right{
+                                    this.indexesOfSaidWords.insert(i)
+                                }
+                                DispatchQueue.main.async { [weak self] in
+                                    if let this = self{
+                                        this.underLine(fromIndex: left, toIndex: right)
+                                    }
+                                }
+                                previousIndex = right
+                            }
+                        } else {
+                            return
+                        }
                     }
-                } else {
-                    return
                 }
             }
         }
@@ -276,21 +317,25 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     }
     
     func underLine(fromIndex: Int, toIndex: Int) {
-        print("underline", fromIndex, toIndex)
-        if let str = self.myMutableString {
-            str.addAttribute(NSBackgroundColorAttributeName, value: colorText, range: NSRange(location: numberOfSymbolsToWord[fromIndex], length: numberOfSymbolsToWord[toIndex + 1] - numberOfSymbolsToWord[fromIndex]))
-            coursor = numberOfSymbolsToWord[toIndex+1]
-            position = toIndex + 1
-            for i in fromIndex...toIndex{
-                indexesOfSaidWords.insert(i)
-            }
-            
-            baseText.attributedText = str
-            
-            let range = NSMakeRange(numberOfSymbolsToWord[fromIndex] - 1, 0)
-            baseText.scrollRangeToVisible(range)
-        }
         
+            let this = self
+                print("underline", fromIndex, toIndex)
+                if let str = this.myMutableString {
+                    str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.numberOfSymbolsToWord[fromIndex], length: this.numberOfSymbolsToWord[toIndex + 1] - this.numberOfSymbolsToWord[fromIndex]))
+//                    this.coursor = this.numberOfSymbolsToWord[toIndex+1]
+//                    this.position = toIndex + 1
+//                    for i in fromIndex...toIndex{
+//                       this.indexesOfSaidWords.insert(i)
+//                    }
+                    
+                    this.baseText.attributedText = str
+                    if(this.numberOfSymbolsToWord[fromIndex] + 100 < text.characters.count){
+                        let range = NSMakeRange(this.numberOfSymbolsToWord[fromIndex] + 100, 0)
+                    this.baseText.scrollRangeToVisible(range)
+                    }
+                }
+        
+
     }
     
     func recognitionStopped(flag: Bool = true) {

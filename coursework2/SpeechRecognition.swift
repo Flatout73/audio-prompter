@@ -9,6 +9,7 @@
 import UIKit
 
 protocol SpeechRecognitionClassDelegate {
+    
     func recogniseWith(result: String)
     func handle(respons: [Respons])
     func underLine(fromWord: String, toWord: String, index: Int)
@@ -39,12 +40,12 @@ class SpeechRecognition: SpeechRecognitionProtocol {
 
     func onPartialResponseReceived(_ partialResult: String!) {
         
-        DispatchQueue.main.async { [weak self] in
-            if let this = self {
+        //DispatchQueue.main.async { [weak self] in
+          //  if let this = self {
                 print(partialResult)
-                this.delegate?.recogniseWith(result: partialResult)
-            }
-        }
+                delegate?.recogniseWith(result: partialResult)
+           // }
+        //}
         
         
     }
@@ -70,17 +71,17 @@ class SpeechRecognition: SpeechRecognitionProtocol {
         }
         
         if(!isFinalDicationMessage){
-            DispatchQueue.main.async { [weak self] in
-                if let this = self {
+            //DispatchQueue.main.async { [weak self] in
+              //  if let this = self {
                     for i in 0 ..< result.recognizedPhrase.count {
                         let phrase: RecognizedPhrase? = result.recognizedPhrase[i] as? RecognizedPhrase
                         
-                        print(this.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
+                        print(convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
                         
-                        this.recogniseFinalWith(result: phrase!.inverseTextNormalizationResult)
+                        recogniseFinalWith(result: phrase!.inverseTextNormalizationResult)
                         
-                    }
-                }
+                //    }
+                //}
             }
             
         }
@@ -90,7 +91,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     
     func recogniseFinalWith(result: String) {
         //DispatchQueue.main.async { [weak self] in
-            //let this = self
+          //  if let this = self {
                 if(!result.isEmpty){
                     if let ranges = shinglAlgo?.start(text: result){
 //                        for range in ranges{
@@ -100,9 +101,9 @@ class SpeechRecognition: SpeechRecognitionProtocol {
                     } else {
                         print("Нет совпадений по алгоритму шинглов")
                     }
-                }
-        
-        //}
+            //    }
+            //}
+        }
     }
     
     func convertSpeechRecoConfidenceEnumToString(confidence: Confidence) -> String {
