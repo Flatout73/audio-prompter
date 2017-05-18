@@ -22,9 +22,10 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     let mode = SpeechRecognitionMode.longDictation
     
     var delegate: SpeechRecognitionClassDelegate?
+    var language = "ru-RU"
     
     lazy var micClient: MicrophoneRecognitionClient = {
-        return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: "ru-RU", withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
+        return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: self.language, withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
     }()
     
     var stop: Bool = true
@@ -32,9 +33,15 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var shinglAlgo: Shingles?
     var bitapAlgo: BitapHamming?
     
-    init(baseText text: String) {
-        shinglAlgo = Shingles(baseText: text)
+    init(baseText text: String, language: Int = 1) {
+        shinglAlgo = Shingles(baseText: text, language: language)
         bitapAlgo = BitapHamming(text: text)
+        
+        if(language == 1) {
+            self.language = "ru-RU"
+        } else{
+            self.language = "en-US"
+        }
     }
 
 

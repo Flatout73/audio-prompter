@@ -23,6 +23,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     var coursor: Int = 0 //курсор по символам
     var myMutableString: NSMutableAttributedString?
     
+    var lang = 1
     
     var words: [String] = [] //words without punctuation
     
@@ -93,7 +94,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
         numberOfSymbolsToWord.insert(numberOfSymbolsToWord.last! + wordsWithComma.last!.characters.count, at: numberOfSymbolsToWord.count)
         
-        speechRec = SpeechRecognition(baseText: text)
+        speechRec = SpeechRecognition(baseText: text, language: lang)
         speechRec?.delegate = self
         
     //убрать это

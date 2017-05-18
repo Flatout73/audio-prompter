@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Сегодня я начну свой доклад с известной всем темы. Ну что же давайте начнем доклад!" translatesAutoresizingMaskIntoConstraints="NO" id="6h4-JZ-Fad">
-                                <rect key="frame" x="16" y="110" width="343" height="311.5"/>
+                                <rect key="frame" x="16" y="110" width="343" height="212.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -64,13 +64,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="18" borderStyle="roundedRect" placeholder="Размер шрифта" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JuF-Fk-baO">
-                                <rect key="frame" x="16" y="530.5" width="343" height="30"/>
+                                <rect key="frame" x="16" y="531" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Размер шрифта" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wC1-vd-vlB">
-                                <rect key="frame" x="16" y="501.5" width="127" height="20.5"/>
+                                <rect key="frame" x="16" y="502.5" width="127" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -83,7 +83,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulk-qU-yZo">
-                                <rect key="frame" x="128" y="437.5" width="119" height="56"/>
+                                <rect key="frame" x="128" y="438.5" width="119" height="56"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                 <state key="normal" title="Поехали!"/>
@@ -111,13 +111,18 @@
                                     <action selector="getTextFromID:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lpe-qb-F01"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="X9a-4Z-0Rh">
+                                <rect key="frame" x="0.0" y="330.5" width="375" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="X9a-4Z-0Rh" secondAttribute="height" multiplier="75:20" id="ljv-i1-5ox"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="1vY-nT-TaR" firstAttribute="leading" secondItem="9v5-G7-gxP" secondAttribute="trailing" constant="8" id="04D-jd-wQJ"/>
                             <constraint firstItem="6ZZ-SD-a9e" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="0Gl-VT-Fsm"/>
                             <constraint firstItem="FBo-TT-L5m" firstAttribute="baseline" secondItem="Jvu-dh-uJ7" secondAttribute="baseline" id="0My-ot-Kzi"/>
-                            <constraint firstItem="Ulk-qU-yZo" firstAttribute="top" secondItem="6h4-JZ-Fad" secondAttribute="bottom" constant="16" id="3df-ZF-EyU"/>
                             <constraint firstItem="Jvu-dh-uJ7" firstAttribute="leading" secondItem="FBo-TT-L5m" secondAttribute="trailing" constant="8" id="4dT-ky-kzm"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6h4-JZ-Fad" secondAttribute="trailing" id="52r-Nb-SxN"/>
                             <constraint firstItem="6h4-JZ-Fad" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6te-uo-zeE"/>
@@ -127,15 +132,18 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LRM-Tc-laQ" secondAttribute="bottom" constant="32" id="9Hu-ZW-CZI"/>
                             <constraint firstItem="JuF-Fk-baO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="AO8-3e-0WA"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="bottom" secondItem="FBo-TT-L5m" secondAttribute="bottom" id="C9D-Oc-Ko4"/>
+                            <constraint firstItem="X9a-4Z-0Rh" firstAttribute="top" secondItem="6h4-JZ-Fad" secondAttribute="bottom" constant="8" id="Dj4-Xg-zkq"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="bottom" secondItem="1vY-nT-TaR" secondAttribute="bottom" id="Ine-xh-WIW"/>
                             <constraint firstItem="1vY-nT-TaR" firstAttribute="width" secondItem="9v5-G7-gxP" secondAttribute="width" id="IwV-Pj-xjn"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="baseline" secondItem="FBo-TT-L5m" secondAttribute="baseline" id="JIM-gL-yz1"/>
                             <constraint firstItem="Kir-5f-Kqu" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Mcv-8f-e22"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="width" secondItem="FBo-TT-L5m" secondAttribute="width" id="Nxj-HC-6fY"/>
+                            <constraint firstItem="X9a-4Z-0Rh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="P3X-6I-14i"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Jvu-dh-uJ7" secondAttribute="trailing" id="PhT-rc-fjs"/>
                             <constraint firstItem="JuF-Fk-baO" firstAttribute="top" secondItem="wC1-vd-vlB" secondAttribute="bottom" constant="8" id="R1u-nY-fNC"/>
                             <constraint firstItem="9v5-G7-gxP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="SU4-zL-Wx1"/>
                             <constraint firstItem="BlJ-78-Rlc" firstAttribute="top" secondItem="JuF-Fk-baO" secondAttribute="bottom" constant="16" id="T4R-KI-eKa"/>
+                            <constraint firstAttribute="trailing" secondItem="X9a-4Z-0Rh" secondAttribute="trailing" id="TxK-dI-H2H"/>
                             <constraint firstItem="LRM-Tc-laQ" firstAttribute="top" secondItem="BlJ-78-Rlc" secondAttribute="bottom" constant="8" id="Ycp-LJ-h2Q"/>
                             <constraint firstItem="6h4-JZ-Fad" firstAttribute="top" secondItem="6ZZ-SD-a9e" secondAttribute="bottom" constant="8" id="a5A-GT-C7s"/>
                             <constraint firstItem="BlJ-78-Rlc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aOe-xg-m1M"/>
@@ -144,6 +152,7 @@
                             <constraint firstItem="eo6-r3-LlU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="e95-l0-erP"/>
                             <constraint firstItem="1vY-nT-TaR" firstAttribute="baseline" secondItem="9v5-G7-gxP" secondAttribute="baseline" id="ebu-82-Fph"/>
                             <constraint firstItem="eo6-r3-LlU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gIU-Ab-adt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JuF-Fk-baO" secondAttribute="trailing" id="kVS-lf-3kq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="6h4-JZ-Fad" secondAttribute="leading" id="lFw-la-GDW"/>
                             <constraint firstItem="FBo-TT-L5m" firstAttribute="leading" secondItem="LRM-Tc-laQ" secondAttribute="trailing" constant="8" id="oJJ-tr-0Yo"/>
                             <constraint firstItem="Ulk-qU-yZo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pXx-4L-c0f"/>
@@ -151,7 +160,7 @@
                             <constraint firstItem="wC1-vd-vlB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="w11-Ic-BaO"/>
                             <constraint firstItem="wC1-vd-vlB" firstAttribute="top" secondItem="Ulk-qU-yZo" secondAttribute="bottom" constant="8" id="w45-lU-eeg"/>
                             <constraint firstItem="6ZZ-SD-a9e" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="xTb-NJ-u0q"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="JuF-Fk-baO" secondAttribute="trailing" id="xUB-yD-5Fr"/>
+                            <constraint firstItem="Ulk-qU-yZo" firstAttribute="top" secondItem="X9a-4Z-0Rh" secondAttribute="bottom" constant="8" id="xht-Or-vQs"/>
                             <constraint firstItem="6ZZ-SD-a9e" firstAttribute="baseline" secondItem="Kir-5f-Kqu" secondAttribute="baseline" id="xtA-ei-rhe"/>
                             <constraint firstItem="FBo-TT-L5m" firstAttribute="width" secondItem="Jvu-dh-uJ7" secondAttribute="width" id="zKX-Tv-Qm0"/>
                         </constraints>
@@ -170,6 +179,7 @@
                         <outlet property="idTextField" destination="6ZZ-SD-a9e" id="3T7-s4-cLL"/>
                         <outlet property="indicator" destination="eo6-r3-LlU" id="cb2-QJ-RDr"/>
                         <outlet property="myText" destination="6h4-JZ-Fad" id="CPQ-b3-PSM"/>
+                        <outlet property="picker" destination="X9a-4Z-0Rh" id="6B9-IY-bHK"/>
                         <outlet property="textSizeField" destination="JuF-Fk-baO" id="6Km-9n-T5W"/>
                     </connections>
                 </viewController>

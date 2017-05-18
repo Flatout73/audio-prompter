@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
+class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
     @IBOutlet weak var myText: UITextView!
@@ -19,11 +19,16 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var picker: UIPickerView!
     
     var backgroundColor: UIColor?
     let defaults = UserDefaults.standard
     var sizeText: Double = 18
 
+    let languages = ["English", "Русский"]
+    
+    var numberOfLang = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         myText.delegate = self
@@ -52,6 +57,8 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
         }
     
         indicator.hidesWhenStopped = true
+        
+        picker.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
@@ -137,6 +144,7 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
                 }
             }
             destinationVC.textSize = Float(sizeText)
+            destinationVC.lang = numberOfLang
         }
     }
     
@@ -214,5 +222,20 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
         return true
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return languages.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return languages[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        numberOfLang = row
+    }
 }
 
