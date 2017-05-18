@@ -394,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
             landmarkName = "SpeechViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "underLine(fromWord:toWord:index:)"
             landmarkType = "7">
             <Locations>
@@ -474,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/ViewController.swift"
-            timestampString = "516358683.501962"
+            timestampString = "516666061.497928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -528,22 +528,6 @@
             startingLineNumber = "40"
             endingLineNumber = "40"
             landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "coursework2/ViewController.swift"
-            timestampString = "516358683.501962"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "startRecognition(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -682,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechRecognition.swift"
-            timestampString = "516646176.940401"
+            timestampString = "516664181.360596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "onMicrophoneStatus(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -698,11 +682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "updateCounter()"
             landmarkType = "7">
          </BreakpointContent>
@@ -714,11 +698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "startRecognition(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -730,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "SpeechViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -746,11 +730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/ViewController.swift"
-            timestampString = "516406616.605883"
+            timestampString = "516666061.497928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "getTextFromID(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,11 +746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/ViewController.swift"
-            timestampString = "516406616.605883"
+            timestampString = "516666061.497928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "getTextFromID(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -778,11 +762,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/ViewController.swift"
-            timestampString = "516406616.605883"
+            timestampString = "516666061.497928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "textFieldShouldReturn(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -794,11 +778,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "recogniseWith(result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -810,12 +794,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "viewWillAppear(_:)"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -826,12 +810,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516652529.411759"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -842,59 +826,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "handle(respons:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -906,11 +842,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "recogniseWith(result:)"
             landmarkType = "7">
             <Locations>
@@ -986,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
             landmarkName = "underLine(fromIndex:toIndex:)"
             landmarkType = "7">
             <Locations>
@@ -1034,11 +970,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "handle(respons:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1050,11 +986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/Shingles.swift"
-            timestampString = "516579019.007491"
+            timestampString = "516663434.759184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "init(baseText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1066,11 +1002,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/Shingles.swift"
-            timestampString = "516579019.007491"
+            timestampString = "516663434.759184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "init(baseText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1082,11 +1018,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "updateCounter()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1098,11 +1034,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "updateCounter()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1114,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "updateCounter()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1130,12 +1066,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "viewWillAppear(_:)"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1146,11 +1082,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/Shingles.swift"
-            timestampString = "516649689.096696"
+            timestampString = "516663434.759184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "start(text:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1162,11 +1098,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
+            startingLineNumber = "266"
+            endingLineNumber = "266"
             landmarkName = "underLine(fromWord:toWord:index:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1178,11 +1114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516654532.000845"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "handle(respons:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1194,45 +1130,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "coursework2/SpeechViewController.swift"
-            timestampString = "516652529.411759"
+            timestampString = "516666187.388746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "coursework2.SpeechViewController.viewDidLoad () -&gt; ()"
-                  moduleName = "coursework2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/LeonidL/Documents/Xcode%20Projects/coursework2/coursework2/SpeechViewController.swift"
-                  timestampString = "516653682.124182"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "60"
-                  endingLineNumber = "60"
-                  offsetFromSymbolStart = "2048">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "coursework2.SpeechViewController.(viewDidLoad () -&gt; ()).(closure #1)"
-                  moduleName = "coursework2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/LeonidL/Documents/Xcode%20Projects/coursework2/coursework2/SpeechViewController.swift"
-                  timestampString = "516653682.125812"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "61"
-                  endingLineNumber = "61"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

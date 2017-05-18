@@ -141,7 +141,11 @@ class SpeechRecognition: SpeechRecognitionProtocol {
                 micClient.endMicAndRecognition()
                 stop = true
             }
-            delegate?.recognitionStopped(flag: true)
+            DispatchQueue.main.async { [weak self] in
+                if let this = self {
+                    this.delegate?.recognitionStopped(flag: true)
+                }
+            }
         }else {
             delegate?.recognitionStopped(flag: false)
         }

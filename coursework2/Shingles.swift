@@ -25,7 +25,7 @@ struct Respons {
 class Shingles {
     
     var originalTextHashes: [String] = []
-    let shinglLength = 4
+    let shinglLength = 3
     
     var canonizedWords: [String] = []
     

@@ -106,12 +106,8 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
     }
     
     @IBAction func startRecognition(_ sender: Any) {
-        if(textSizeField.text != nil){
-            if let size = Double(textSizeField.text!){
-                sizeText = size
-                defaults.set(size, forKey: "textSize")
-            }
-        }
+
+        defaults.set(sizeText, forKey: "textSize")
         
         if let color = backgroundColor {
              let colorData = NSKeyedArchiver.archivedData(withRootObject: color) as NSData?
@@ -135,6 +131,11 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate 
             let destinationVC = segue.destination as? SpeechViewController {
             destinationVC.text = myText.text
             destinationVC.colorText = backgroundColor!
+            if(textSizeField.text != nil){
+                if let size = Double(textSizeField.text!){
+                    sizeText = size
+                }
+            }
             destinationVC.textSize = Float(sizeText)
         }
     }

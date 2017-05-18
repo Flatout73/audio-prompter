@@ -189,7 +189,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Запись остановлена" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7O-wq-esr">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Запись остановлена" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7O-wq-esr">
                                 <rect key="frame" x="28" y="350" width="163.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -229,6 +229,7 @@
                             <constraint firstItem="hvU-a8-TY8" firstAttribute="top" secondItem="VHI-TI-Hpe" secondAttribute="bottom" constant="8" id="Uuc-W6-Rk4"/>
                             <constraint firstItem="k7O-wq-esr" firstAttribute="leading" secondItem="5al-cH-iow" secondAttribute="leadingMargin" constant="12" id="VL7-KU-NuT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hvU-a8-TY8" secondAttribute="trailing" constant="8" id="cOi-qw-tgy"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="k7O-wq-esr" secondAttribute="trailing" constant="8" id="vCz-Kh-Emf"/>
                             <constraint firstItem="z4X-f1-bIc" firstAttribute="centerY" secondItem="1t0-Fd-0iD" secondAttribute="centerY" id="wBs-nw-dCD"/>
                         </constraints>
                     </view>

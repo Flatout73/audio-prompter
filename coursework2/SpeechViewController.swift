@@ -46,28 +46,25 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
+
         
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
         let wordsWithEmpty = text
-                            .lowercased()
-                            .replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
-                            .components(separatedBy: .punctuationCharacters)
-                            .joined(separator: " ")
-                            .components(separatedBy: .whitespacesAndNewlines)
-                            //.joined(separator: " ")
-                            //.components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
+            .lowercased()
+            .replacingOccurrences(of: "ё", with: "е", options: .diacriticInsensitive, range: nil)
+            .components(separatedBy: .punctuationCharacters)
+            .joined(separator: " ")
+            .components(separatedBy: .whitespacesAndNewlines)
+        //.joined(separator: " ")
+        //.components(separatedBy: CharacterSet(charactersIn: (", .!-?\n«»\"")))
         words = wordsWithEmpty.filter { (x) -> Bool in
             !x.isEmpty
         }
         
         let wordsWithComma = text.components(separatedBy: .whitespacesAndNewlines)
-        
-        
-//        numberOfSymbolsToWord.append(0)
-//        for i in 1...wordsWithComma.count {
-//            numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[i-1].characters.count + 1)
-//        }
         
         var spaces = 1
         var lastNotEmpty = 0
@@ -81,7 +78,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                     numberOfSymbolsToWord.append(numberOfSymbolsToWord.last! + wordsWithComma[lastNotEmpty].characters.count + spaces)
                     if(wordsWithComma[i].characters.contains("-")) {
                         numberOfSymbolsToWord.append(numberOfSymbolsToWord.last!)
-                        }
+                    }
                     spaces = 1
                     lastNotEmpty = i
                     
@@ -92,22 +89,18 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                 spaces += 1
             }
         }
-
-        numberOfSymbolsToWord.insert(numberOfSymbolsToWord.last! + wordsWithComma.last!.characters.count, at: numberOfSymbolsToWord.count)
-    
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        numberOfSymbolsToWord.insert(numberOfSymbolsToWord.last! + wordsWithComma.last!.characters.count, at: numberOfSymbolsToWord.count)
+        
         speechRec = SpeechRecognition(baseText: text)
         speechRec?.delegate = self
         
     //убрать это
             //recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
-        speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
+        //speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
 //         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
-//        speechRec.recogniseFinalWith(result: "решила отдать меня")
+ //      speechRec?.recogniseFinalWith(result: "Многое из того, что я открыл для себя в те времена, подчиняясь своему любопытсву и интуиции")
 //        recogniseWith(result: "на усыновление")
 //        
 //        recogniseWith(result: "завораживало")
@@ -145,7 +138,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
         if(counter == 0) {
             timerC.invalidate()
-            self.statusLabel.text = "Идет запись..."
+            //self.statusLabel.text = "Идет запись..."
             self.title = "Идет запись..."
             timer.isHidden = true
             speechRec?.stop = false
@@ -168,11 +161,15 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     }
 
     func recogniseWith(result:String) {
+        
+        self.statusLabel.text = result
+        
+        //TODO: Убрать это
         let this = self
         
         if let str = this.myMutableString {
             
-            for res in result.components(separatedBy: " "){
+            for res in result.replacingOccurrences(of: "ё", with: "е", options: .caseInsensitive, range: nil).components(separatedBy: " "){
                 if(this.position < this.words.count){
                     let w = this.words[this.position]
                     
@@ -302,7 +299,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
             self.title = "Запись остановлена"
             self.imageButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
         } else {
-            self.statusLabel.text = "Идет запись..."
+            //self.statusLabel.text = "Идет запись..."
             self.title = "Идет запись..."
         }
     }
