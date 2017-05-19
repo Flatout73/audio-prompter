@@ -44,9 +44,8 @@ class BitapHamming {
         
         t = 0
         for c in baseText.substring(from: baseText.index(baseText.startIndex, offsetBy:start)).characters{
-            //print(c, "–")
+            
             var oldRd1 = R[0]
-            //print(c.unicodeScalarCodePoint())
             R[0] |= patternMask[c.unicodeScalarCodePoint()]
             
             R[0] <<= 1

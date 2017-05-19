@@ -13,12 +13,7 @@ struct Respons {
     var endWord: String
     var startIndex: Int
     var endindex: Int
-    
-//    init(startWord: String, endWord: String, startIndex:Int) {
-//        self.startWord = startWord
-//        self.endWord = endWord
-//        self.startIndex = startIndex
-//    }
+
 }
 
 
@@ -68,13 +63,11 @@ class Shingles {
     func start(text: String) -> [Respons] {
         let canonized = canonize(text: text)
         let hashes = hashedShinglesFrom(words: canonized)
-        //var ranges: [String: String] = [:]
         var resp = [Respons]()
         
         for i in 0..<hashes.count {
             for j in 0..<originalTextHashes.count{
                 if (hashes[i] == originalTextHashes[j]) {
-                    //ranges[canonizedWords[h]] = canonizedWords[h + shinglLength - 1]
                     resp.append(Respons(startWord: canonizedWords[j], endWord: canonizedWords[j + shinglLength - 1], startIndex: indexOfCanonizedToBase[j], endindex: indexOfCanonizedToBase[j + shinglLength - 1]))
                     print("Shingles", resp.last!.startWord, resp.last!.endWord)
                     
@@ -86,7 +79,6 @@ class Shingles {
     
     
     private func canonize(text: String) -> [String] {
-        //let okayChars: Set<Character> = Set("")
         
         var res = text
         res = res.lowercased()

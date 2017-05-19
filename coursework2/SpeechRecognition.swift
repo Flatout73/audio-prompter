@@ -24,7 +24,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     var delegate: SpeechRecognitionClassDelegate?
     var language = "ru-RU"
     
-    lazy var micClient: MicrophoneRecognitionClient = {
+    lazy var micClient: MicrophoneRecognitionClient = { [unowned self] in
         return SpeechRecognitionServiceFactory.createMicrophoneClient(.longDictation, withLanguage: self.language, withKey: "eb76b0ffa0034be39981558ee48641af", with: self)
     }()
     
@@ -47,12 +47,12 @@ class SpeechRecognition: SpeechRecognitionProtocol {
 
     func onPartialResponseReceived(_ partialResult: String!) {
         
-        //DispatchQueue.main.async { [weak self] in
-          //  if let this = self {
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
                 print(partialResult)
-                delegate?.recogniseWith(result: partialResult)
-           // }
-        //}
+                this.delegate?.recogniseWith(result: partialResult)
+            }
+        }
         
         
     }
@@ -61,34 +61,34 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     
         if(result.recognitionStatus != .recognitionSuccess) {
             print(result.recognitionStatus)
-            //micClient?.endMicAndRecognition()
+           
             micClient.audioStop()
             micClient.startMicAndRecognition()
         }
         
-        //micClient?.endMicAndRecognition();
+        
         let isFinalDicationMessage = self.mode == .longDictation &&
             (/*result.recognitionStatus == .endOfDictation ||*/
                 result.recognitionStatus == .dictationEndSilenceTimeout)
         
         if(/*isFinalDicationMessage ||*/ mode == .shortPhrase || stop){
-            //if let mic = micClient {
-                micClient.endMicAndRecognition()
-            //}
+            
+            micClient.endMicAndRecognition()
+
         }
         
         if(!isFinalDicationMessage){
-            //DispatchQueue.main.async { [weak self] in
-              //  if let this = self {
+            DispatchQueue.main.async { [weak self] in
+                if let this = self {
                     for i in 0 ..< result.recognizedPhrase.count {
                         let phrase: RecognizedPhrase? = result.recognizedPhrase[i] as? RecognizedPhrase
                         
-                        print(convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
+                        print(this.convertSpeechRecoConfidenceEnumToString(confidence: phrase!.confidence) + " " + (phrase!.inverseTextNormalizationResult))
                         
-                        recogniseFinalWith(result: phrase!.inverseTextNormalizationResult)
+                        this.recogniseFinalWith(result: phrase!.inverseTextNormalizationResult)
                         
-                //    }
-                //}
+                    }
+                }
             }
             
         }
@@ -97,19 +97,17 @@ class SpeechRecognition: SpeechRecognitionProtocol {
     }
     
     func recogniseFinalWith(result: String) {
-        //DispatchQueue.main.async { [weak self] in
-          //  if let this = self {
+        DispatchQueue.main.async { [weak self] in
+            if let this = self {
                 if(!result.isEmpty){
-                    if let ranges = shinglAlgo?.start(text: result){
-//                        for range in ranges{
-//                            delegate?.underLine(fromWord: range.startWord, toWord: range.endWord, index: range.startIndex)
-//                        }
-                        delegate?.handle(respons: ranges)
+                    if let ranges = this.shinglAlgo?.start(text: result){
+
+                        this.delegate?.handle(respons: ranges)
                     } else {
                         print("Нет совпадений по алгоритму шинглов")
                     }
-            //    }
-            //}
+                }
+            }
         }
     }
     
@@ -136,8 +134,7 @@ class SpeechRecognition: SpeechRecognitionProtocol {
                 print(errorMessage, this.convertSpeechErrorToString(errorCode: errorCode))
                 this.micClient.audioStop()
                 this.delegate?.errorShow(error: errorMessage)
-                
-            //self.micClient.endMicAndRecognition()
+            
             }
         }
     }
@@ -158,10 +155,6 @@ class SpeechRecognition: SpeechRecognitionProtocol {
             delegate?.recognitionStopped(flag: false)
         }
     }
-//    
-//    func onSpeakerStatus(_ speaking: Bool) {
-//        print(speaking)
-//    }
     
     func convertSpeechErrorToString(errorCode: OSStatus) -> String {
         switch (SpeechClientStatus(rawValue: errorCode)!) {

@@ -108,10 +108,6 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate,
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        if (text == "\n") {
-//            myText.resignFirstResponder()
-//            return false
-//        }
         return true
     }
     
@@ -153,6 +149,9 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate,
             }
             destinationVC.textSize = Float(sizeText)
             destinationVC.lang = numberOfLang
+            
+            picker.isUserInteractionEnabled = false
+            picker.alpha = 0.5
         }
     }
     
@@ -219,7 +218,7 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate,
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

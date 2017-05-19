@@ -49,8 +49,6 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
         myMutableString = NSMutableAttributedString(string: text, attributes: attributes)
         baseText.attributedText = myMutableString
-
-        //serialQueue.maxConcurrentOperationCount = 1
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,20 +95,16 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         speechRec = SpeechRecognition(baseText: text, language: lang)
         speechRec?.delegate = self
         
-    //убрать это
+    //Для тестов алгоритмов (убрать это)
  //           recogniseWith(result: "Я бросил колледж после шести месяцев обучения")
         
  //       speechRec?.recogniseFinalWith(result: "По наивности я выбрал очень дорогой колледж")
 //         speechRec?.recogniseFinalWith(result: "и все сбережения моих небогатых родителей")
-//       speechRec?.recogniseFinalWith(result: "Поэтому я решил бросить")
+       speechRec?.recogniseFinalWith(result: "Поэтому я решил бросить")
 //        recogniseWith(result: "на усыновление")
 //        
-//        speechRec?.onPartialResponseReceived("учебу")
+        speechRec?.onPartialResponseReceived("учебу")
         //recogniseWith(result: "доклад")
-        
-        
-        //        let ranges = speechRec.shinglAlgo?.start(text: "давайте начнём")
-        //            underLine(fromWord: "давайте", toWord: "начнем")
         
     }
     
@@ -140,7 +134,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         
         if(counter == 0) {
             timerC.invalidate()
-            //self.statusLabel.text = "Идет запись..."
+            self.statusLabel.text = "Идет запись..."
             self.title = "Идет запись..."
             timer.isHidden = true
             speechRec?.stop = false
@@ -164,7 +158,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
 
     func recogniseWith(result:String) {
         
-        serialQueue.async {
+        serialQueue.async { [unowned self] in
             DispatchQueue.main.async { [weak self] in
                 self?.statusLabel.text = result
             }
@@ -323,6 +317,7 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
                 print("underline", fromIndex, toIndex)
                 if let str = this.myMutableString {
                     str.addAttribute(NSBackgroundColorAttributeName, value: this.colorText, range: NSRange(location: this.numberOfSymbolsToWord[fromIndex], length: this.numberOfSymbolsToWord[toIndex + 1] - this.numberOfSymbolsToWord[fromIndex]))
+                    //перенесено в метод выше
 //                    this.coursor = this.numberOfSymbolsToWord[toIndex+1]
 //                    this.position = toIndex + 1
 //                    for i in fromIndex...toIndex{
