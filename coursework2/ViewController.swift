@@ -29,6 +29,8 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate,
     
     var numberOfLang = 0
     
+    var keyboardIsShown = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         myText.delegate = self
@@ -67,11 +69,17 @@ class ViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate,
     }
     
     func keyboardWillShow(notification:NSNotification) {
-        adjustingHeight(show: true, notification: notification)
+        if(keyboardIsShown == false){
+            adjustingHeight(show: true, notification: notification)
+            keyboardIsShown = true
+        }
     }
     
     func keyboardWillHide(notification:NSNotification) {
-        adjustingHeight(show: false, notification: notification)
+        if(keyboardIsShown == true) {
+            adjustingHeight(show: false, notification: notification)
+            keyboardIsShown = false
+        }
     }
     
     func adjustingHeight(show:Bool, notification:NSNotification) {

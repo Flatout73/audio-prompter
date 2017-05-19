@@ -165,9 +165,9 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
     func recogniseWith(result:String) {
         
         serialQueue.async {
-            
-            self.statusLabel.text = result
-            
+            DispatchQueue.main.async { [weak self] in
+                self?.statusLabel.text = result
+            }
             for res in result.replacingOccurrences(of: "ё", with: "е", options: .caseInsensitive, range: nil).replacingOccurrences(of: "-", with: " ").components(separatedBy: " ") {
                 if(self.position < self.words.count){
                     let w = self.words[self.position]
@@ -350,6 +350,10 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        speechRec?.micClient.endMicAndRecognition()
+    }
+    
     func errorShow(error: String) {
         let alert = UIAlertController(title: "Ошибка", message: "Возможно нет подключения к интернету: " + error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -361,15 +365,13 @@ class SpeechViewController: UIViewController, SpeechRecognitionClassDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+public extension String {
+    
+    func isNumber() -> Bool {
+        let numberCharacters = CharacterSet.decimalDigits.inverted
+        return !self.isEmpty && self.rangeOfCharacter(from: numberCharacters) == nil
     }
-    */
-
+    
 }
